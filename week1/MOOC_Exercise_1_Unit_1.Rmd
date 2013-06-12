@@ -5,7 +5,6 @@ MOOC: R Exercise 1
 
 First we download the data from the website.
 ```{r}
-setwd("./week1/")
 download.file(url = "https://s3-us-west-1.amazonaws.com/prod-edx/MedStats/RegressionExerciseDocs/mock_class_data.csv", destfile = "week1R.csv", method = "curl")
 ```
 
@@ -14,6 +13,7 @@ Then we have to read the csv into R.
 data <- read.csv("./week1R.csv")
 ```
 
+### First look...
 We can look at the data names and types.
 ```{r}
 str(data)
