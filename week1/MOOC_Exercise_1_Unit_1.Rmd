@@ -1,31 +1,137 @@
 MOOC: R Exercise 1
 =========
 
-# 1. ‘Varsity’ is currently stored as type ‘double’. Change this continuous variable to a categorical variable. R denotes categorical variables as factors. 
+### Get the Data
+
+First we download the data from the website.
+```{r}
+# download.file(url = "https://s3-us-west-1.amazonaws.com/prod-edx/MedStats/RegressionExerciseDocs/mock_class_data.csv", destfile = "week1R.csv", method = "curl")
+```
+
+Then we have to read the csv into R.
+```{r}
+data <- read.csv("./week1R.csv")
+```
+
+We can look at the data names and types.
+```{r}
+str(data)
+```
+It's not apparent why yet, but the last 4 variables (columns) are all logical variables and all of their values are NA...
+```{r}
+summary(data[23:26])
+```
+
+Also the last 6 rows are all NAs as well.
+```{r}
+data[51:56, ]
+```
 
 
-2. Sort data, first in ascending order by ‘Varsity’, then in decreasing order by ‘WritingLove’.
+### 1. ‘Varsity’ is currently stored as type ‘double’. Change this continuous variable to a categorical variable. R denotes categorical variables as factors. 
+```{r}
+data$Varsity <- factor(data$Varsity)
+```
+
+### 2. Sort data, first in ascending order by ‘Varsity’, then in decreasing order by ‘WritingLove’.
+
+To be worked on...
+
+### 3. Filter the data such that you create a dataset with only records of students who have ‘MathLove’ scores greater than or equal to 70. 
+First look at how many Mathlove >= 70.
+```{r}
+summary(data$Mathlove >= 70)
+```
+
+There are 19 that are >= 70 with 9 NAs.  
+
+We have to filter for both >= 70 and not NA.
+```{r}
+data[!is.na(data$Mathlove) & data$Mathlove >= 70, ] 
+```
+
+### 4. Click on Extras -> Data Summary for a quick summary of all the variables in your dataset. How many missing values does the variable ‘carter’ have?
+```{r}
+summary(data)
+```
+'carter' has 18 NA's.
+
+### 5. Create a histogram for the variable ‘coffee’ in dark blue.
+
+```{r}
+hist(data$coffee, col = "darkblue")
+```
 
 
-3. Filter the data such that you create a dataset with only records of students who have ‘MathLove’ scores greater than or equal to 70.
+### 6. Create a scatterplot of hours of exercise (‘exercise’) vs. hours of homework (‘homework’). Include a smoothed loess curve. Comment on what you see (trends, outliers, etc.). 
+```{r}
+plot(data$exercise, data$homework, pch = 19, cex = 0.5)
+lw1 <- loess(homework[order(exercise)] ~ exercise[order(exercise)], data = data) # We put it in order to make a line on the graph. Otherwise it's all crooked
+lines(data$exercise[order(data$exercise)][!is.na(data$homework)], lw1$fitted) # We have to order the exercise points again as well as drop the NA observations to make this plot
+```
+Compare to the automatic `scatter.smooth` function.
+```{r}
+scatter.smooth(data$exercise, data$homework, pch = 19, cex = 0.5)
+```
 
 
-4. Click on Extras -> Data Summary for a quick summary of all the variables in your dataset. How many missing values does the variable ‘carter’ have?
+### 7. Create a histogram for ‘milk’. You notice that there is one person who indicated ‘50’ that seems like an outlier. After going back to the data collection forms, you verify that 50 was indeed miscoded, and that the true value is 5. You decide to fix this problem by creating a new variable called ‘milkFixed’. (Hint: Save before attempting. Go to Data  Recode Variables. Be sure to hit the “ Target” button while you have the item in “Variables to Recode” highlighted. This will allow you to rename the new variable so you do not overwrite your existing values. Specify conditions in “Define Recode”)
+```{r}
+hist(data$Milk)
+```
+
+Copy old variable into new `milkFixed` variable.
+```{r}
+data$milkFixed <- data$Milk
+```
+
+Which individual answered 50 (or more than 20 anyway)?
+```{r}
+which(data$milkFixed > 20)
+```
+
+Take individual 30 and make that into a 5, not a 50.
+```{r}
+data$milkFixed[30] <- 5
+```
+
+Histogram looks much better!
+```{r}
+hist(data$milkFixed)
+```
+
+### 8. What is the mean, standard deviation, and median number of hours of sleep in the dataset?
+```{r}
+mean(data$sleep, na.rm = T)
+sd(data$sleep, na.rm = T)
+median(data$sleep, na.rm = T)
+```
 
 
-5. Create a histogram for the variable ‘coffee’ in dark blue.
+### 9. Perform a stratified analysis of mean outlook on life by alcohol consumption (i.e., What is the mean score for outlook on life for each amount of alcohol consumed?). What is the mean score for those who indicated that they have 5 drinks?
 
-6. Create a scatterplot of hours of exercise (‘exercise’) vs. hours of homework (‘homework’). Include a smoothed loess curve. Comment on what you see (trends, outliers, etc.). 
+Stratifying on number of drinks, we can see the mean outlook on life (optimism).
+```{r}
+tapply(X = data$optimism, INDEX = data$alcohol, mean, na.rm = T)
+```
 
-7. Create a histogram for ‘milk’. You notice that there is one person who indicated ‘50’ that seems like an outlier. After going back to the data collection forms, you verify that 50 was indeed miscoded, and that the true value is 5. You decide to fix this problem by creating a new variable called ‘milkFixed’. (Hint: Save before attempting. Go to Data  Recode Variables. Be sure to hit the “ Target” button while you have the item in “Variables to Recode” highlighted. This will allow you to rename the new variable so you do not overwrite your existing values. Specify conditions in “Define Recode”)
+Those who have had 5 drinks indicated a `r mean(data$optimism[data$alcohol == 5], na.rm = T)` level of optimism.
 
-8. What is the mean, standard deviation, and median number of hours of sleep in the dataset?
+### 10. How many people consider themselves street smart? (Hint: Another way of phrasing this question is ‘what is the frequency of people who consider themselves street smart?’)
 
-9. Perform a stratified analysis of mean outlook on life by alcohol consumption (i.e., What is the mean score for outlook on life for each amount of alcohol consumed?). What is the mean score for those who indicated that they have 5 drinks?
+Presumably this means the opposite of IsBookSmart.
+```{r}
+table(data$IsBookSmart, useNA = "ifany")
+```
+Nine people consider themselves street smart.
 
-10. How many people consider themselves street smart? (Hint: Another way of phrasing this question is ‘what is the frequency of people who consider themselves street smart?’)
+### 11. Create a box plot for ‘fruitveg’. What does the black dot in the figure represent?
+```{r}
+boxplot(data$fruitveg, pch = 19)
+```
+That black dot represents an outlier that is more than 1.5 times the IQR beyond the 75th percentile.
 
-11. Create a box plot for ‘fruitveg’. What does the black dot in the figure represent?
-
-12. Re-examine the relationship of mean outlook on life by alcohol consumption using a group box plot. 
-
+### 12. Re-examine the relationship of mean outlook on life by alcohol consumption using a group box plot. 
+```{r}
+boxplot(optimism ~ alcohol, data = data, xlab = "Number of alcoholic drinks/week", ylab= "Optimism score", varwidth = T)
+```
