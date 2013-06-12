@@ -5,8 +5,8 @@ MOOC: R Exercise 1
 
 First we download the data from the website.
 ```{r}
-download.file(url = "https://s3-us-west-1.amazonaws.com/prod-edx/MedStats/RegressionExerciseDocs/mock_class_data.csv", destfile = "week1R.csv", method = "curl")
 setwd("./week1/")
+download.file(url = "https://s3-us-west-1.amazonaws.com/prod-edx/MedStats/RegressionExerciseDocs/mock_class_data.csv", destfile = "week1R.csv", method = "curl")
 ```
 
 Then we have to read the csv into R.
