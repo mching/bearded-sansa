@@ -1,8 +1,9 @@
 Unit 1 Homework
 =======
 
-Question Set 1
--------
+Unit 1 Homework - Question Set 1
+----
+## A doctor examines a group of healthy adults (presenting to clinic for their annual physical exams) and records their respiratory rates, shown in the following table.
 
 ```{r}
 resp <- c(rep(11, 10), rep(12, 9), rep(13, 11), rep(14, 14), rep(15, 10), rep(16, 6))
@@ -38,4 +39,34 @@ IQR(resp)
 ```{r}
 prop.table(table(resp))
 barplot(prop.table(table(resp)), xlab = "Respiratory Rate", ylab = "Percentage")
+```
+
+Unit 1 Homework - Question Set 2
+-----
+## When you flip a coin, there are two possible outcomes: {0=tails, 1=heads}. Each outcome occurs with equal probability. As an experiment, you flip a coin 100 times, with the following result:
+
+### Encode data
+```{r}
+coinflip <- c(rep(0, 53), rep(1, 47))
+table(coinflip)
+```
+
+### a.  Calculate the mean of your sample data (n=100). Please enter your value to two decimal places (e.g., .xx).
+```{r}
+round(mean(coinflip), 2)
+```
+
+### b.  Calculate the standard deviation of your sample data (n=100). Please enter to two decimal places (e.g., .xx).
+```{r}
+round(sd(coinflip), digits = 2)
+```
+
+### c.  What is the median value? Please enter a whole number.
+```{r}
+median(coinflip)
+```
+
+### d.  What is the interquartile range? Please enter a whole number.
+```{r}
+IQR(coinflip)
 ```
