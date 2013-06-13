@@ -4,4 +4,38 @@ Unit 1 Homework
 Question Set 1
 -------
 
-## a. 
+```{r}
+resp <- c(rep(11, 10), rep(12, 9), rep(13, 11), rep(14, 14), rep(15, 10), rep(16, 6))
+table(resp)
+```
+
+### a. Calculate the mean of the sample data (n=60). Please enter your answer to one decimal place (e.g., xx.x). 
+
+```{r}
+round(mean(resp), digits = 1)
+```
+
+### b. Calculate the standard deviation of the sample data (n=60). Please enter your answer to two decimal places (e.g., xx.xx).
+
+```{r}
+round(sd(resp), digits = 2)
+```
+
+### c. What is the median value? Please enter your answer to one decimal place (e.g., xx.x).
+
+```{r}
+round(median(resp), digits = 1)
+```
+
+### d. What is the interquartile range? Your answer should be a whole number. 
+
+```{r}
+IQR(resp)
+```
+
+### e. Which of the following histograms correctly pictures the data?
+
+```{r}
+prop.table(table(resp))
+barplot(prop.table(table(resp)), xlab = "Respiratory Rate", ylab = "Percentage")
+```
