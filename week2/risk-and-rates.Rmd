@@ -1,0 +1,37 @@
+Incidence Rates, Cumulative Risk, and Prevalence
+=====
+
+## Incidence rate
+
+Create table of events and person time.
+```{r}
+library(epiR)
+Table <- matrix(c(56, 121, 2315, 2316), 2, 2)
+Table
+Table[1, 1] / Table[1, 2]
+```
+
+Use `epi.2by2` to calculate incidence estimates.
+```{r}
+epi.2by2(Table, method = "cohort.time")
+```
+
+## Risk 
+Create table of events and people. We need to subtract off the events from the second column of subjects to get the totals right.
+```{r}
+Table2 <- matrix(c(56, 121, 4047-56, 4029-121), 2, 2)
+Table2
+prop.table(Table2, 1)
+```
+
+Use `epi.2by2` to calculate incidence estimates.
+```{r}
+epi.2by2(Table2, method = "cohort.count")
+```
+
+## Cross sectional data
+```{r}
+Table3 <- matrix(c(9, 11, 16, 894-9, 487-11, 539-16), 3, 2)
+Table3
+prop.table(Table3, 1)
+```
