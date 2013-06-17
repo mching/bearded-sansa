@@ -11,6 +11,7 @@ TablePT
 
 # Calculate incidence rate
 epi.2by2(TablePT, method = "cohort.time")
+1/(epi.2by2(TablePT, method = "cohort.time", verbose = T)$AR/100)
 
 # Create table of those who had heart attacks and those who did not
 TableRisk <- matrix(c(17,4,4047-17,4029-4), 2, 2)
