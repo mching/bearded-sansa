@@ -44,18 +44,24 @@ First look at how many Mathlove >= 70.
 summary(data$Mathlove >= 70)
 ```
 
-There are 19 that are >= 70 with 9 NAs.  
+There are 17 that are >= 70 with 9 NAs.  
 
-We have to filter for both >= 70 and not NA.
+We have to filter for >= 70.
 ```{r}
-data[!is.na(data$Mathlove) & data$Mathlove >= 70, ] 
+data.filter <- data[data$Mathlove >= 70, ] 
+```
+
+We can further filter out those on Mathlove that are NA.
+
+```{r}
+data.filter <- data.filter[!is.na(data.filter$Mathlove), ]
 ```
 
 ### 4. Click on Extras -> Data Summary for a quick summary of all the variables in your dataset. How many missing values does the variable ‘carter’ have?
 ```{r}
 summary(data)
 ```
-'carter' has 18 NA's.
+'carter' has 18 NA's. For some reason this is different than the Deducer solution in the answer key.
 
 ### 5. Create a histogram for the variable ‘coffee’ in dark blue.
 
@@ -65,12 +71,6 @@ hist(data$coffee, col = "darkblue")
 
 
 ### 6. Create a scatterplot of hours of exercise (‘exercise’) vs. hours of homework (‘homework’). Include a smoothed loess curve. Comment on what you see (trends, outliers, etc.). 
-```{r}
-plot(data$exercise, data$homework, pch = 19, cex = 0.5)
-lw1 <- loess(homework[order(exercise)] ~ exercise[order(exercise)], data = data) # We put it in order to make a line on the graph. Otherwise it's all crooked
-lines(data$exercise[order(data$exercise)][!is.na(data$homework)], lw1$fitted) # We have to order the exercise points again as well as drop the NA observations to make this plot
-```
-Compare to the automatic `scatter.smooth` function.
 ```{r}
 scatter.smooth(data$exercise, data$homework, pch = 19, cex = 0.5)
 ```
@@ -86,9 +86,9 @@ Copy old variable into new `milkFixed` variable.
 data$milkFixed <- data$Milk
 ```
 
-Which individual answered 50 (or more than 20 anyway)?
+Which individual answered 50 (or more than 20 anyway)? It is individual 30.
 ```{r}
-which(data$milkFixed > 20)
+which(data$milkFixed == 50)
 ```
 
 Take individual 30 and make that into a 5, not a 50.
@@ -116,7 +116,7 @@ Stratifying on number of drinks, we can see the mean outlook on life (optimism).
 tapply(X = data$optimism, INDEX = data$alcohol, mean, na.rm = T)
 ```
 
-Those who have had 5 drinks indicated a `r mean(data$optimism[data$alcohol == 5], na.rm = T)` level of optimism.
+Those who have had 5 drinks indicated a 74.5 level of optimism.
 
 ### 10. How many people consider themselves street smart? (Hint: Another way of phrasing this question is ‘what is the frequency of people who consider themselves street smart?’)
 
