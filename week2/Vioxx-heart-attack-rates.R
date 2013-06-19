@@ -11,6 +11,8 @@ TablePT
 
 # Calculate incidence rate
 epi.2by2(TablePT, method = "cohort.time")
+
+# Calculate number needed to treat (harm)
 1/(epi.2by2(TablePT, method = "cohort.time", verbose = T)$AR/100)
 
 # Create table of those who had heart attacks and those who did not
