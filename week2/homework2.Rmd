@@ -1,4 +1,49 @@
 Homework 2
 ========================================================
 
-Input table
+Input separate tables for person time and risks to make it easier for later calculations
+
+```{r}
+Table.person.time <- matrix(c(20, 4, 2698, 2699), 2, 2)
+rownames(Table.person.time) <- c("Vioxx", "naproxen")
+colnames(Table.person.time) <- c("Heart attacks", "Person-years")
+Table.person.time
+
+Table.events <- matrix(c(20, 4, 4047-20, 4029-4), 2, 2)
+rownames(Table.events) <- c("Vioxx", "naproxen")
+colnames(Table.events) <- c("Heart attacks", "No heart attacks")
+Table.events
+```
+
+### Question 1.
+What is the absolute difference in the incidence rates of heart attacks for Vioxx versus Naproxen? Please calculate as events per 1000 person-years and round to the nearest tenth (e.g., x.x); do not write the units when entering your answer.
+
+```{r}
+Vioxx.rate <- Table.person.time[1,1]/Table.person.time[1,2]
+naproxen.rate <- Table.person.time[2,1]/Table.person.time[2,2]
+round(1000*(Vioxx.rate - naproxen.rate), digits = 1)
+```
+
+### Question 2.
+What is the absolute difference in the risk of heart attacks for Vioxx versus Naproxen? Please report as a percentage, rounded to the nearest hundredth (e.g., .xx). Do not include the % sign.
+
+```{r}
+Vioxx.risk <- Table.events[1,1]/Table.events[1,2]
+naproxen.risk <- Table.events[2,1]/Table.events[2,2]
+(Vioxx.risk - naproxen.risk)*100
+```
+
+### Question 3.
+What is the rate ratio comparing Vioxx with Naproxen? Please round to the nearest tenth (e.g., x.x).
+
+```{r}
+Vioxx.rate/naproxen.rate
+```
+
+### Question 4.
+What is the number needed to harm? Round to the nearest whole number.
+
+Number needed to harm is the inverse of the absolute risk difference.
+```{r}
+1/(Vioxx.risk - naproxen.risk)
+```
