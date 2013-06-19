@@ -47,3 +47,53 @@ Number needed to harm is the inverse of the absolute risk difference.
 ```{r}
 1/(Vioxx.risk - naproxen.risk)
 ```
+
+### Question 5.
+What percent of single-pill users were hospitalized during follow-up? (do not include the % sign)
+```{r}
+one.pill.risk <- 7.7/100
+```
+
+
+### Question 6.
+What percent of three-or-more-pill users were hospitalized during follow-up? (eg. x.x, do not include the % sign)
+
+```{r}
+three.pill.risk <- 9.9/100
+```
+
+### Question 7.
+Calculate the risk ratio comparing the risk of hospitalization in single-pill users versus three-or-more-pill users. Round to the nearest hundredth (e.g., .xx).
+
+```{r}
+one.pill.risk/three.pill.risk
+```
+
+### Question 8.
+Calculate the odds ratio comparing the odds of hospitalization in single-pill users versus three-or-more-pill users. Round to the nearest hundredth (e.g., .xx).
+```{r}
+one.pill.odds <- one.pill.risk/(1-one.pill.risk)
+three.pill.odds <- three.pill.risk/(1-three.pill.risk)
+# Odds ratio
+one.pill.odds/three.pill.odds
+```
+
+### Question 10.
+The adjusted odds ratio comparing the1.0 mg tesofensine group with the placebo group for the outcome of a weight loss of 5kg or more was 31.5. Calculate the unadjusted risk ratio for this comparison (using the percentages given in the table). Round to the nearest tenth (e.g., x.x).
+
+```{r}
+Table10 <- matrix(c(42, 13, 4, 32), 2, 2)
+rownames(Table10) <- c("tesofensine 1.0 mg", "placebo")
+colnames(Table10) <- c("loss >= 5 kg", "loss < 5 kg")
+Table10
+Table10.prop <- prop.table(Table10, 1)
+Table10.prop
+Table10.prop[1,1] / Table10.prop[2,1]
+```
+
+Alternately we can use the `epi.2by2` function from the `epiR` package. See `?epi.2by2` to see how you have to arrange the tables you give the function.
+
+```{r}
+library(epiR)
+epi.2by2(Table10, method="cohort.count")
+```
