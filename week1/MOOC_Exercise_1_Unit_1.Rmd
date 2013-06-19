@@ -106,6 +106,10 @@ hist(data$milkFixed)
 mean(data$sleep, na.rm = T)
 sd(data$sleep, na.rm = T)
 median(data$sleep, na.rm = T)
+
+mean(data.filter$sleep, na.rm = T)
+sd(data.filter$sleep, na.rm = T)
+median(data.filter$sleep, na.rm = T)
 ```
 
 
@@ -114,6 +118,7 @@ median(data$sleep, na.rm = T)
 Stratifying on number of drinks, we can see the mean outlook on life (optimism).
 ```{r}
 tapply(X = data$optimism, INDEX = data$alcohol, mean, na.rm = T)
+tapply(X = data.filter$optimism, INDEX = data.filter$alcohol, mean, na.rm = T)
 ```
 
 Those who have had 5 drinks indicated a 74.5 level of optimism.
@@ -123,6 +128,7 @@ Those who have had 5 drinks indicated a 74.5 level of optimism.
 Presumably this means the opposite of IsBookSmart.
 ```{r}
 table(data$IsBookSmart, useNA = "ifany")
+table(data.filter$IsBookSmart, useNA = "ifany")
 ```
 Nine people consider themselves street smart.
 
