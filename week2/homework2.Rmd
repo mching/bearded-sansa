@@ -20,9 +20,19 @@ What is the absolute difference in the incidence rates of heart attacks for Viox
 
 ```{r}
 Vioxx.rate <- Table.person.time[1,1]/Table.person.time[1,2]
+Vioxx.rate
 naproxen.rate <- Table.person.time[2,1]/Table.person.time[2,2]
+naproxen.rate
 round(1000*(Vioxx.rate - naproxen.rate), digits = 1)
 ```
+
+Also you can use the `epi.2by2` function from the `epiR` package to calculate the most commonly used estimates from the table.
+
+```{r}
+library(epiR)
+epi.2by2(Table.person.time, method = "cohort.time")
+```
+
 
 ### Question 2.
 What is the absolute difference in the risk of heart attacks for Vioxx versus Naproxen? Please report as a percentage, rounded to the nearest hundredth (e.g., .xx). Do not include the % sign.
@@ -31,6 +41,12 @@ What is the absolute difference in the risk of heart attacks for Vioxx versus Na
 Vioxx.risk <- Table.events[1,1]/Table.events[1,2]
 naproxen.risk <- Table.events[2,1]/Table.events[2,2]
 (Vioxx.risk - naproxen.risk)*100
+```
+
+Again, you can also use the `epi.2by2` function to do this:
+
+```{r}
+epi.2by2(Table.events)
 ```
 
 ### Question 3.
@@ -46,6 +62,14 @@ What is the number needed to harm? Round to the nearest whole number.
 Number needed to harm is the inverse of the absolute risk difference.
 ```{r}
 1/(Vioxx.risk - naproxen.risk)
+```
+
+We can extract risk difference (Attrib risk, or AR) from the `epi.2by2` output with the `verbose = T` option.
+
+```{r}
+risk.diff <- epi.2by2(Table.events, method = "cohort.count", verbose = T)$AR/100
+risk.diff
+1/risk.diff # NNT
 ```
 
 ### Question 5.
