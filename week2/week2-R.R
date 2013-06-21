@@ -1,7 +1,10 @@
 # Unit 2 examples
 
-# load rats dataset from survival package
+# Libraries used. If you don't have epiR, use install.packages("epiR")
 library(survival)
+library(epiR)
+
+# load rats dataset from survival package
 data(rats)
 
 str(rats)
@@ -12,7 +15,7 @@ Table1 <- with(rats, table(rx.factor, status.factor))
 Table1
 
 # Calculate risks and risk ratio
-epi.2by2(Table1)
+epi.2by2(Table1, method = "cohort.count")
 
 # How much person time is accumulated in the drug group? 
 person.time <- tapply(rats$time, rats$rx.factor, sum)
@@ -28,3 +31,6 @@ Table2
 
 # Calculate rates and rate ratio
 epi.2by2(Table2, method="cohort.time")
+
+# Calculate number needed to treat
+1/(epi.2by2(Table2, method="cohort.time", verbose = T)$AR)
