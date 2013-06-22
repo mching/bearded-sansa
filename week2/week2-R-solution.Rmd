@@ -1,0 +1,97 @@
+HRP 258 Week 2, R Exercise
+========================================================
+Risk and Rate Ratios
+----
+
+This exercise will help you learn how to calculate risk and rate ratios and differences using R or Deducer.
+
+### Loading the Data
+We will use the `rats` dataset from the `survival` package.  
+
+If you don't already have this package for some reason, type:
+~~~
+install.packages("survival")
+~~~
+
+To load the dataset type the following:
+
+```{r}
+library(survival)
+data(rats)
+```
+
+To learn more about the dataset, type `?rats`.  
+
+We will be interested in only 3 variables: `rx`, `time`, and `status`. As you can see in the help page for the dataset, `rx` is treatment (1=drug, 0=control), `time` is time to tumor or last follow-up, and `status` is event status (1=tumor, 0=censored). In this case, censored means that there was no tumor the last time they looked at that rat.
+
+### Questions
+Q1. Convert `rx` and `status` into factor variables. If you can, also label the levels with the appropriate names (i.e., drug, control, tumor, censored).
+```{r}
+rats$status.factor <- factor(rats$status, levels = 1:0, labels = c("tumor", "censored"))
+rats$rx.factor <- factor(rats$rx, levels = 1:0, labels = c("drug", "control"))
+```
+
+Q2. Create a 2x2 contingency table with `rx` on the rows and `status` on the columns.
+
+```{r}
+Table1 <- with(rats, table(rx.factor, status.factor))
+Table1
+```
+
+Q3. Using this table, what is the risk of tumor in the drug (`rx` = 1) group? What is the risk of tumor in the control (`rx` = 0) group?
+
+```{r}
+Table1risk <- prop.table(Table1, margin = 1)
+Table1risk
+```
+
+Q4. Using this table, what is the risk ratio of tumor in the drug group versus the control group? What is the odds ratio? What is the risk difference? 
+```{r}
+Table1risk[1, 1] / Table1risk[2, 1] # Risk ratio
+(Table1[1, 1] / Table1[1, 2]) / (Table1[2, 1]/ Table1[2, 2]) # Odds ratio
+Table1risk[1, 1] - Table1risk[2, 1] # Risk difference
+```
+
+Q5. How much person-time (rat-time?) was observed in rats receiving the drug (`rx` = 1)? How much person-time was observed in rats receiving the control (`rx` = 0)? There are many ways to do this but one way would be to subset the data on `rx` = 1 and see what is the sum of `time`. Then re-subset on `rx` = 0 and see how much person-time there is.
+
+```{r}
+drug.time <- with(rats, sum(time[rx == 1])) # drug group
+drug.time
+control.time <- with(rats, sum(time[rx == 0])) # control group
+control.time
+```
+
+Another solution is to use `tapply` to subgroup the data.
+
+```{r}
+person.time <- tapply(rats$time, rats$rx.factor, sum)
+person.time
+```
+
+
+Q6. Create a 2x2 table with the rows being the `rx` groups and the first column being the number of tumors in each group and the second column being person time in each group.
+```{r}
+Table2 <- matrix(c(Table1[, 1], drug.time, control.time), nrow = 2, ncol = 2)
+colnames(Table2) <- c("tumors", "person-time")
+rownames(Table2) <- c("drug", "control")
+Table2
+```
+
+
+Q7. What is the rate ratio comparing tumor incidence in the drug and control groups? What is the rate difference? What is the number needed to harm?
+```{r}
+rate.drug <- Table2[1, 1]/Table2[1, 2] 
+rate.control <- Table2[2, 1] / Table2[2, 2]
+rate.drug / rate.control # rate ratio
+rate.drug - rate.control # rate difference
+1 / (rate.drug - rate.control) # NNT
+```
+
+An alternate way to do this is to use the `epiR` package. This package has a function called `epi.2by2` that automates much of the calculations above. The only issue is that it requires you to give it tables in a specific orientation (exposures or treatments on the rows and disease on the columns). For more information, see the `epiR` documentation. To install it, type `install.packages("epiR")` at the console.
+
+```{r}
+library(epiR)
+epi.2by2(Table1, method = "cohort.count")
+epi.2by2(Table2, method = "cohort.time")
+1 / epi.2by2(Table2, method = "cohort.time", verbose = T)$AR * 100
+```
