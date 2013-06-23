@@ -36,7 +36,11 @@ data$Varsity <- factor(data$Varsity)
 
 ### 2. Sort data, first in ascending order by ‘Varsity’, then in decreasing order by ‘WritingLove’.
 
-To be worked on...
+```{r}
+data.sorted <- data[order(data$Varsity, -data$WritingLove), ]
+data.sorted
+```
+
 
 ### 3. Filter the data such that you create a dataset with only records of students who have ‘MathLove’ scores greater than or equal to 70. 
 First look at how many Mathlove >= 70.
