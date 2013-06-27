@@ -33,11 +33,12 @@ round(prob.2.multip*100, 3)
 
 ### Enter as a percent but do not include the % sign. Round to the nearest tenth (e.g., xx.x). 
 
-The probability of at least one event in a given number of trials is the same as 1 - the probability of no events in that number of trials. The probability of no events in one trial is 1 - the probability of that event happening once.
+The probability of at least one event in a given number of trials is the same as 1 - the probability of no events in that number of trials. The probability of no events in one trial is 1 - the probability of that event happening once. The probability of no events in 10 trials is this to the 10th power.
 
 ```{r}
 prob.no.multip <- (1 - prob.multip)
-prob.no.multip.10 <- 1 - prob.no.multip^10
+prob.no.multip.10 <- prob.no.multip^10
+prob.at.least.1.multip <- 1 - prob.no.multip.10
 round(prob.no.multip.10*100, 1)
 ```
 
@@ -61,4 +62,106 @@ The probability of survival to 5 yrs and survival to 10 yrs is the same thing as
 $$ P(B|A) = \frac{0.2}{0.6} $$
 ```{r}
 round(0.2/0.6*100, 0)
+```
+
+## Question 5:
+
+### A company has developed a diagnostic test to screen for antibiotic resistance in acne patients. A positive test means that the patient will be less likely to respond to treatment with a specific antibiotic; a negative test means that they will be more likely to respond. To determine the clinical utility of the test, researchers applied the test to 59 patients who were known non-responders to oxytetracycline and 72 patients who were known responders. Here are the results:
+
+```{r}
+Table5 <- matrix(c(10, 49, 9, 63), nrow = 2)
+rownames(Table5) <- c("Test positive", "Test negative")
+colnames(Table5) <- c("Non-responders", "Responders")
+Table5
+```
+
+### What is the sensitivity of the test?
+
+### Enter as a percent but do not include the % sign. Round to the nearest whole number.
+
+```{r}
+
+q5.sens <- Table5[1, 1]/sum(Table5[, 1])
+round(100*q5.sens, 0)
+```
+
+## Question 6:
+
+### What is the specificity of the test?
+
+### Enter as a percent but do not include the % sign. Round to the nearest whole number. 
+
+```{r}
+q6.spec <- Table5[2, 2]/sum(Table5[, 2])
+round(100*q6.spec, 0)
+```
+
+## Question 7:
+
+### The company believes that the prevalence of oxytetracycline resistance among acne patients in the general population is about 50%. Use this information to calculate the positive predictive value.
+
+### Enter as a percent but do not include the % sign. Round to the nearest whole number. 
+
+We can estimate this using "natural frequencies". Imagine we select 1000 people at random from the population. We can then assume that 50%, or 500 have resistance and 500 do not.
+
+We multiply the 500 with resistance by the test sensitivity to find out how many with the disease will test positive. 
+```{r}
+500*q5.sens
+```
+
+We multiply the 500 without resistance by the test specificity to find out how many without the disease will test negative.
+```{r}
+500*q6.spec
+```
+
+ | Resistant | Not Resistant | Total
+--- | :---: | :---: | :---:
+Test positive | 84.75 |  ? | 
+Test negative | ? | 437.5 | 
+Total | 500 | 500 | 1000
+
+We can then fill in the question marks by subtacting from 500.
+
+```{r}
+500-q5.sens*500
+500-q6.spec*500
+```
+
+
+ | Resistant | Not Resistant | Total
+--- | :---: | :---: | :---:
+Test positive | 84.75 |  62.5 | 
+Test negative | 415.25 | 437.5 | 
+Total | 500 | 500 | 1000
+
+By adding across the rows, we can get the row totals.
+
+```{r}
+q5.sens*500 + (500 - q6.spec*500)
+500*q6.spec + (500-q5.sens*500)
+```
+
+ | Resistant | Not Resistant | Total
+--- | :---: | :---: | :---:
+Test positive | 84.75 |  62.5 | 147.25
+Test negative | 415.25 | 437.5 | 852.75
+Total | 500 | 500 | 1000
+
+Positive predictive value can then be easily calculated:
+
+```{r}
+q5.sens*500/(q5.sens*500 + (500 - q6.spec*500))
+round(100*q5.sens*500/(q5.sens*500 + (500 - q6.spec*500)), 0)
+```
+
+## Question 8:
+
+### The company believes that the prevalence of oxytetracycline resistance among acne patients in the general population is about 50%. Use this information to calculate the negative predictive value.
+
+### Enter as a percent but do not include the % sign. Round to the nearest whole number. 
+
+Using the prior table, we can again calculate the NPV easily.
+
+```{r}
+round(500*q6.spec/(500*q6.spec + (500-q5.sens*500))*100, 0)
 ```
