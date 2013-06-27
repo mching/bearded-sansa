@@ -38,8 +38,8 @@ epi.2by2(Table.person.time, method = "cohort.time")
 What is the absolute difference in the risk of heart attacks for Vioxx versus Naproxen? Please report as a percentage, rounded to the nearest hundredth (e.g., .xx). Do not include the % sign.
 
 ```{r}
-Vioxx.risk <- Table.events[1,1]/Table.events[1,2]
-naproxen.risk <- Table.events[2,1]/Table.events[2,2]
+Vioxx.risk <- Table.events[1,1]/sum(Table.events[1,])
+naproxen.risk <- Table.events[2,1]/sum(Table.events[2,])
 (Vioxx.risk - naproxen.risk)*100
 ```
 
@@ -61,7 +61,7 @@ What is the number needed to harm? Round to the nearest whole number.
 
 Number needed to harm is the inverse of the absolute risk difference.
 ```{r}
-1/(Vioxx.risk - naproxen.risk)
+1/(Vioxx.rate - naproxen.rate)
 ```
 
 We can extract risk difference (Attrib risk, or AR) from the `epi.2by2` output with the `verbose = T` option.
@@ -98,12 +98,14 @@ Calculate the odds ratio comparing the odds of hospitalization in single-pill us
 ```{r}
 one.pill.odds <- one.pill.risk/(1-one.pill.risk)
 three.pill.odds <- three.pill.risk/(1-three.pill.risk)
-# Odds ratio
+```
+Odds ratio
+```{r}
 one.pill.odds/three.pill.odds
 ```
 
 ### Question 10.
-The adjusted odds ratio comparing the1.0 mg tesofensine group with the placebo group for the outcome of a weight loss of 5kg or more was 31.5. Calculate the unadjusted risk ratio for this comparison (using the percentages given in the table). Round to the nearest tenth (e.g., x.x).
+The adjusted odds ratio comparing the 1.0 mg tesofensine group with the placebo group for the outcome of a weight loss of 5kg or more was 31.5. Calculate the unadjusted risk ratio for this comparison (using the percentages given in the table). Round to the nearest tenth (e.g., x.x).
 
 ```{r}
 Table10 <- matrix(c(42, 13, 4, 32), 2, 2)
@@ -114,10 +116,19 @@ Table10.prop <- prop.table(Table10, 1)
 Table10.prop
 Table10.prop[1,1] / Table10.prop[2,1]
 ```
+The accepted answer was 3.1, presumably because of rounding.
 
 Alternately we can use the `epi.2by2` function from the `epiR` package. See `?epi.2by2` to see how you have to arrange the tables you give the function.
 
 ```{r}
 library(epiR)
 epi.2by2(Table10, method="cohort.count")
+```
+### Question 11.
+The adjusted odds ratio comparing the1.0 mg tesofensine group with the placebo group for the outcome of a weight loss of 5kg or more was 31.5. Calculate the adjusted risk ratio for this comparison using the conversion formula below. Round to the nearest tenth (e.g., x.x).
+
+```{r}
+OR.1 <- 31.5
+P.ref <- Table10.prop[2,1]
+OR.1 / ((1 - P.ref) + (P.ref * OR.1))
 ```
