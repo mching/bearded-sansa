@@ -1,0 +1,64 @@
+Unit 3 Homework
+====
+
+## Question 1:
+
+### In 1980 (before the era of in-vitro fertilization), there were 3,612,258 births in the United States (according to the U.S. Census Bureau), of which 68,339 births were to twins and 1,337 births were to triplets or more.
+
+### What was the probability of having multiples (twins or more) in 1980?
+
+### Enter as a percent but do not include the % sign. Round to the nearest tenth (e.g., x.x).
+
+```{r}
+prob.multip <- (68339+1337)/3612258
+round(prob.multip*100,1)
+```
+
+## Question 2:
+
+### What was the probability of a woman giving birth to multiples twice in a row in the pre-IVF era? (Assume that the probabilities for 1980 are representative of the pre-IVF era.)
+
+### Enter as a percent but do not include the % sign. Round to 3 decimal places (e.g., .xxx).
+
+Assuming that having multiple births is a random event (i.e., women who have had a multiple birth are not more likely to have another multiple birth), we multiply the probability of a multiple birth by itself.
+```{r}
+prob.2.multip <- prob.multip^2
+round(prob.2.multip*100, 3)
+
+```
+
+## Question 3:
+
+### If a woman had 10 births in her lifetime in the pre-IVF era, what was the chance that at least one of those births was to multiples? (Assume that the probabilities for 1980 are representative of the pre-IVF era.)
+
+### Enter as a percent but do not include the % sign. Round to the nearest tenth (e.g., xx.x). 
+
+The probability of at least one event in a given number of trials is the same as 1 - the probability of no events in that number of trials. The probability of no events in one trial is 1 - the probability of that event happening once.
+
+```{r}
+prob.no.multip <- (1 - prob.multip)
+prob.no.multip.10 <- 1 - prob.no.multip^10
+round(prob.no.multip.10*100, 1)
+```
+
+## Question 4:
+
+### Suppose that the probability of surviving for 5-years after being diagnosed with a particular cancer is 0.60; and the probability of surviving for 10 years is 0.20. If a person survives 5 years, what is the probability that she will survive 10 years?
+
+### Enter as a percent but do not include the % sign. The answer should be a whole number (e.g. xx). 
+
+If we call event A survival to 5 yrs and event B survival to 10 yrs.
+
+$$ P(A) = 0.6 $$
+$$ P(B) = 0.2 $$
+
+We are interested in survival to 10 yrs given survival to 5 yrs. 
+
+$$ P(B|A) = \frac{P(A\&B)}{P(A)} $$
+
+The probability of survival to 5 yrs and survival to 10 yrs is the same thing as survival to 10 yrs, 0.2.
+
+$$ P(B|A) = \frac{0.2}{0.6} $$
+```{r}
+round(0.2/0.6*100, 0)
+```
