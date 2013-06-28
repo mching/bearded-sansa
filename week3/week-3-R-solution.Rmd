@@ -76,7 +76,7 @@ Table[2, 2] / sum(Table[2, ])
 Or we can just make up our data
 ```{r}
 set.seed(90025)
-W3data <- data.frame(test = c(rnorm(100, mean = 10, sd = 1), rnorm(100, mean = 8, sd = 1)), disease = c(rep(1, 100), rep(0, 100)))
+W3data <- data.frame(test = c(rnorm(1000, mean = 10, sd = 1), rnorm(1000, mean = 8, sd = 1)), disease = c(rep(1, 1000), rep(0, 1000)))
 W3data$test2 <- ifelse(W3data$test < 9, 0, 1)
 W3data$test2 <- factor(W3data$test2, levels = 0:1, labels = c("Test pos", "Test neg"))
 W3data$disease <- factor(W3data$disease, levels = 0:1, labels = c("Disease pos", "Disease neg"))
