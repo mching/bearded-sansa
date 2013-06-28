@@ -1,3 +1,42 @@
 Week 3 R Exercise
 ====
 
+## Introduction
+I didn't write any exercises on probability since these aren't so useful with R. However, sensitivity and specificity as well as positive and negative predictive values are relevant medical data analysis questions, particularly when you are trying to come up with a "test" that can predict an outcome.
+
+For example, if you are given one continuous variable and one categorical variable, we can see whether the categorical variable can be predicted from the continuous one. One way to do this is to say if the test is above a certain value, then we'll call the result positive and below it negative. You can then see what are the sensitivity, specificity, positive predictive value and negative predictive value when looking at the real result.
+
+You can find many examples of this in medical diagnostic testing. The amount of activity of the elastase enzyme in a stool sample can be used to predict whether a patient has cystic fibrosis. However to do so, you have to have a cutoff point (i.e., below a certain level of elastase level, the patient likely has CF). Then you can run a trial to calculate sensitivity, specificity, PPV, and NPV.
+
+## Example
+
+### Dataset
+I couldn't find a good medical example so for this example we will use the `iris` dataset. This dataset comes preinstalled with most R installations. Use `?iris` to find out more about the data.
+
+For simplicity, we will just look at the iris species *versicolor* and *virginica* and try to tell them apart using petal length.
+
+First we load the data and subset out the *setosa* species.
+
+```{r}
+data(iris)
+irisvv <- subset(iris, subset = iris$Species != "setosa")
+irisvv$Species <- factor(irisvv$Species)
+boxplot(Petal.Length ~ Species, data = irisvv)
+```
+
+Now we arbitrarily set a test variable that is true when petal length is < 55 and false when >= 5.
+
+```{r}
+irisvv$shortpetal <- ifelse(irisvv$Petal.Length < 5, 1, 0)
+irisvv$shortpetal <- factor(irisvv$shortpetal, levels = 1:0, labels = c("<5 cm", ">5 cm"))
+table(irisvv$shortpetal)
+```
+
+Now to create the table for our shortpetal test of telling one species from the other:
+
+```{r}
+Table <- with(irisvv, table(shortpetal, Species))
+Table
+```
+
+What is the sensitivity of having short petals (i.e., < 5 cm) for detecting a *versicolor* iris?
