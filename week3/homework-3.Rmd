@@ -39,7 +39,7 @@ The probability of at least one event in a given number of trials is the same as
 prob.no.multip <- (1 - prob.multip)
 prob.no.multip.10 <- prob.no.multip^10
 prob.at.least.1.multip <- 1 - prob.no.multip.10
-round(prob.no.multip.10*100, 1)
+round(prob.at.least.1.multip*100, 1)
 ```
 
 ## Question 4:
@@ -165,3 +165,17 @@ Using the prior table, we can again calculate the NPV easily.
 ```{r}
 round(500*q6.spec/(500*q6.spec + (500-q5.sens*500))*100, 0)
 ```
+
+## Question 9:
+
+### In a blind taste test, three panelists tasted five pizza brands—Godfather's, Papa John's, Pizza Hut, zpizza and Ledo Pizza. All three panelists rated Godfather’s pizza dead last. What’s the probability that this outcome happened purely by chance?
+
+### In other words, assume that there is no taste difference between the five brands sampled and calculate the probability that all three panelists happened to randomly rate Godfather’s as worst.
+
+### Enter as a percent but do not include the % sign. Round to the nearest tenth (e.g., .x). 
+
+## Question 10:
+
+### In the early 1980s, hemophiliacs received reconstituted clotting factor concentrates derived from human blood. The concentrates were pooled from the blood of about 1000 donors per lot. If the prevalence of HIV in donor blood in the early 1980s was 1 in 3,000, what was the probability that a hemophiliac would contract HIV from a single infusion of clotting factors?
+
+### Enter as a percent but do not include the % sign. Round to the nearest tenth (e.g., xx.x). 
