@@ -204,3 +204,14 @@ Now what is the probability that 3 people choose it last, assuming that they are
 ### In the early 1980s, hemophiliacs received reconstituted clotting factor concentrates derived from human blood. The concentrates were pooled from the blood of about 1000 donors per lot. If the prevalence of HIV in donor blood in the early 1980s was 1 in 3,000, what was the probability that a hemophiliac would contract HIV from a single infusion of clotting factors?
 
 ### Enter as a percent but do not include the % sign. Round to the nearest tenth (e.g., xx.x). 
+
+Restating this problem, what is the probability that at least one of the 1000 donors that make up the pool has HIV?
+
+This is the same as 1 - the probability that none of those 1000 donors has HIV. 
+
+```{r}
+prob.no.HIV <- 1 - 1/3000
+prob.no.HIV^1000 # probablity that none of a sample of 1000 people have HIV
+1 - prob.no.HIV^1000
+round(100 * (1 - prob.no.HIV^1000), 1)
+```
