@@ -1,7 +1,7 @@
 x <- rep(NA, 15000)
 set.seed(96859)
 for(i in 1:15000) {
-  x[i] <- diff(table(rbinom(125, 1, prob = 0.5)))
+  x[i] <- 2*(62.5 - sum(rbinom(125, 1, prob = 0.5)))
 }
 mean(x)
 sd(x)
