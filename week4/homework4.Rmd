@@ -40,3 +40,16 @@ x | p(x)
 varx <- sum((x-ev.x)^2*px)
 varx^0.5
 ```
+
+## Question 3:
+
+### If spine bone density is normally distributed in young women with a mean of 1.0 g/cm2 and a standard deviation of .10 g/cm2, then how many young women out of 100 would you expect to have bone densities less than .85 g/cm2?
+
+### Round to the nearest whole number.
+
+```{r}
+mean3 <- 1
+sd3 <- 0.1
+100*pnorm(0.85, mean = mean3, sd = sd3)
+
+```
