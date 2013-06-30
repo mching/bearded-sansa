@@ -5,6 +5,7 @@ for(i in 1:15000) {
 }
 mean(x)
 sd(x)
+hist(x)
 sum(abs(x)>=23)/15000
 
 
