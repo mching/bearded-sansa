@@ -1,0 +1,22 @@
+Homework 4
+========================================================
+
+## Question 1:
+
+### The following table shows a discrete probability distribution.
+x | p(x)
+---|---
+0|	0
+1|	.1
+2|	.2
+3|	.4
+4|	.1
+5|	.2
+
+Find the expected value (mean) of this probability distribution. Please round to 1 decimal place.
+
+```{r}
+x <- 0:5
+px <- c(0, 0.1, 0.2, 0.4, 0.1, 0.2)
+sum(x*px)
+```
