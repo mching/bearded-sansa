@@ -1,0 +1,11 @@
+Week 4 R Exercise
+====
+
+Introduction to Probability Distributions in R
+====
+
+R has many built in probability distributions including the normal, binomial, Students' t, Poisson
+
+```{r}
+?distributions
+```
