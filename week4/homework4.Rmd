@@ -115,6 +115,7 @@ data.frame(failed = 0:8, density = dbinom(0:8, 8, 0.05), cumulative = pbinom(0:8
 ```{r}
 p9 <- pbinom(2, 4, 1/6, lower.tail = F)
 10^6 * p9
+10^6 * p9 - 50 # EV
 ```
 
 ## Question 10:
@@ -132,7 +133,7 @@ var10 <- n10*p10*q10
 sd10 <- var10^0.5
 mean10
 sd10
-1 - pnorm(111, mean10, sd10)
+1 - pnorm(112, mean10, sd10)
 pbinom(111, 200, 0.5, lower.tail = F)
 ```
 
