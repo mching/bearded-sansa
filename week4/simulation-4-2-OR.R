@@ -13,11 +13,19 @@ table(dat)
 # Make variable to store results
 OR.data <- rep(NA, 1000)
 
+# Set seed
+set.seed(2467)
+
+# Simulation
 for(i in 1:1000) {
   # Sample 50 cases and 50 controls
   cases.index <- sample(1000, 50, replace = F)
   controls.index <- sample(1000, 50, replace = F) + 1000L
-  table(dat[c(cases.index, controls.index), ])
-  # Calculate OR
-  # Store in variable  
+  Table <- table(dat[c(cases.index, controls.index), ])
+
+  # Calculate OR and store
+  OR.data[i] <- Table[1, 1] * Table[2, 2] / Table[1, 2] / Table[2, 1]
 }
+
+mean(OR.data)
+sd(OR.data)
