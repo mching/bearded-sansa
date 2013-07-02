@@ -52,6 +52,18 @@ pnorm(110, mean = 102, sd = 4.2, lower.tail = F)
 pnorm(120, mean = 102, sd = 4.2, lower.tail = F)
 ```
 
-7. 
+7. Load the dataset `mgus` from the `survival` package. This dataset refers to monoclonal gammopathy of uncertain significance (`?mgus` for more information).
+
+```{r}
+library(survival)
+data(mgus)
+```
+
+Is the albumin level at MGUS diagnosis normally distributed?
+
+```{r}
+hist(mgus$alb)
+qqnorm(mgus$alb)
+```
 
 [1]: http://pediatrics.aappublications.org/content/131/6/e1708.full
