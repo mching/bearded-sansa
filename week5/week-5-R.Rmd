@@ -1,39 +1,71 @@
 Week 5 R
 ====
 
-Esophageal cancer example
+Simulate data for case control study. Prevalence of exposure in cases is 0.2, Prevalence of exposure in controls is 0.1. 
 
 ```{r}
-data(esoph)
+set.seed(8)
+disease <- c(rep(1, 1000), rep(0, 1000))
+exposure <- c(rbinom(1000, 1, 0.2), rbinom(1000, 1, 0.1))
 ```
 
-How many levels of tobacco use are there?
+Reorder factor (not actually necessary here since the OR will be the same)
 
 ```{r}
-str(esoph$tobgp)
+disease <- factor(disease, levels = 1:0, labels = c("case", "control"))
+exposure <- factor(exposure, levels = 1:0, labels = c("exposed", "not exposed"))
+Table1 <- table(exposure, disease)
+Table1
 ```
 
-Recode tobacco use into 0-9g/day versus >9g/day
+What is the odds ratio?
 
 ```{r}
-esoph$tobgp.2 <- rep(NA, 88)
-esoph$tobgp.2 <- ifelse(esoph$tobgp == "0-9g/day", 0, 1)
+a <- Table1[1, 1]
+b <- Table1[1, 2]
+c <- Table1[2, 1]
+d <- Table1[2, 2]
+OR1 <- (a/b) / (c/d)  # OR
+OR1
 ```
 
-Optional: Label the levels with <=9g/d and >9g/d
+What is the standard error of the natural log of the odds ratio?
+
 ```{r}
-esoph$tobgp.2 <- factor(esoph$tobgp.2, levels = 1:0, labels = c(">9g/d", "<=9g/d"))
-table(esoph$tobgp.2)
+seOR <- sqrt(1/a + 1/b + 1/c + 1/d)
+seOR
 ```
 
-How many cases are there with >9g/d versus <= 9g/d?
+What is the 95% confidence interval for the natural log of the odds ratio?
 
 ```{r}
-tapply(esoph$ncases, esoph$tobgp.2, sum)
+log(OR1) + qnorm(0.025)*seOR
+log(OR1) + qnorm(0.975)*seOR
 ```
 
-How many controls are there with >9g/d versus <=9g/d?
+What is the 95% confidence interval for the odds ratio?
 
 ```{r}
-tapply(esoph$ncontrols, esoph$tobgp.2, sum)
+exp(log(OR1) + qnorm(0.025)*seOR)
+exp(log(OR1) + qnorm(0.975)*seOR)
+```
+
+There are a variety of functions that can help with this calculation.
+
+The package `epitools` has an `oddsratio` function that allows you to use different methods to calculate the odds ratio and 95% confidence interval. The `method = "wald"` argument gives you the method taught in class.
+```{r}
+library(epitools)
+oddsratio(Table1, method = "wald")
+```
+
+The `fisher.test` function from the `stats` package calculates the odds ratio using another method.
+
+```{r}
+fisher.test(Table1)
+```
+
+The `epi.2by2` function from the `epiR` package uses `fisher.test` to calculate the odds ratio and also supplies a variety of other useful estimates.
+```{r}
+library(epiR)
+epi.2by2(Table1, method = "case.control")
 ```
