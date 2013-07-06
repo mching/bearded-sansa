@@ -45,10 +45,65 @@ Table4
 
 OR
 ```{r}
-10*55/(5*40)
+OR.4 <- 10*55/(5*40)
+OR.4
 ```
 
 ```{r}
 library(epiR)
 epi.2by2(Table4, method = "case.control")
+```
+
+Question 5:
+
+Take the natural log of the odds ratio that you calculated in question 4.
+
+```{r}
+log(OR.4)
+```
+
+Question 6:
+
+Calculate the standard error of the lnOR, according to the formula given above.
+
+```{r}
+se.6 <- (1/Table4[1,1] + 1/Table4[1,2] + 1/Table4[2,1] + 1/Table4[2,2])^0.5
+se.6
+```
+
+Question 7:
+
+Calculate the 95% confidence interval for the lnOR.
+
+```{r}
+log(OR.4) + qnorm(0.025)*se.6
+log(OR.4) + qnorm(0.975)*se.6
+```
+
+Question 8:
+
+Convert the upper and lower confidence limits that you calculated in (e) back to odds ratios by exponentiating (i.e., calculate the 95% confidence interval for the OR).
+
+```{r}
+exp(log(OR.4) + qnorm(0.025)*se.6)
+exp(log(OR.4) + qnorm(0.975)*se.6)
+
+```
+
+Question 11:
+
+A hypothetical HIV vaccine trial involving 20,000 participants—10,000 in the vaccine group and 10,000 in the placebo group—had the following results: 6.3 infections per 1000 in the vaccine group and 9.0 infections per 1000 in the placebo group.
+
+I ran a computer simulation to predict possible outcomes of the trial if the null hypothesis is true—that is, if vaccinated and unvaccinated people are equally likely to contract HIV. I ran 1000 virtual trials of 20,000 people (10,000 per group) assuming that the vaccine is ineffective. Outcomes are expressed as excess infections in the placebo group. Here are the results of the 1000 virtual trials displayed as a histogram.
+
+About 164 between -2.5 and +2.5. The probability of being outside of that is (1000-164)/1000 or 0.836.
+
+Question 12:
+
+From the simulation, I learn that the statistic ‘excess infections in the placebo group’ follows a normal distribution with a mean of 0 and a standard deviation (standard error) of 12.3. Use this information to calculate the two-sided p-value more precisely than in (11). Round to the nearest thousandth.
+
+There were 9-6.3 or 2.7 excess infections.
+
+```{r}
+2*pnorm(2.7, mean = 0, sd = 12.3, lower.tail = F)
 ```
