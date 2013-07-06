@@ -133,7 +133,12 @@ var10 <- n10*p10*q10
 sd10 <- var10^0.5
 mean10
 sd10
+
 1 - pnorm(112, mean10, sd10)
+pnorm(112, mean10, sd10, lower.tail = F)
+
+pnorm(111.5, mean10, sd10, lower.tail = F)
 pbinom(111, 200, 0.5, lower.tail = F)
+
 ```
 
