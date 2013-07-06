@@ -1,0 +1,39 @@
+Week 5 R
+====
+
+Esophageal cancer example
+
+```{r}
+data(esoph)
+```
+
+How many levels of tobacco use are there?
+
+```{r}
+str(esoph$tobgp)
+```
+
+Recode tobacco use into 0-9g/day versus >9g/day
+
+```{r}
+esoph$tobgp.2 <- rep(NA, 88)
+esoph$tobgp.2 <- ifelse(esoph$tobgp == "0-9g/day", 0, 1)
+```
+
+Optional: Label the levels with <=9g/d and >9g/d
+```{r}
+esoph$tobgp.2 <- factor(esoph$tobgp.2, levels = 1:0, labels = c(">9g/d", "<=9g/d"))
+table(esoph$tobgp.2)
+```
+
+How many cases are there with >9g/d versus <= 9g/d?
+
+```{r}
+tapply(esoph$ncases, esoph$tobgp.2, sum)
+```
+
+How many controls are there with >9g/d versus <=9g/d?
+
+```{r}
+tapply(esoph$ncontrols, esoph$tobgp.2, sum)
+```
