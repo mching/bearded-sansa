@@ -12,59 +12,19 @@ For example, in the normal distribution, these functions are `dnorm`, `pnorm`, `
 ### Exercises
 1.  What is the probability of obtaining *exactly 10* sixes when you roll 60 dice one time?
 
-```{r}
-dbinom(x = 10, size = 60, prob = 1/6)
-```
-
 2.  What is the probability of obtaining *10 or fewer* sixes when you roll 60 dice one time?
-
-```{r}
-pbinom(q = 10, size = 60, prob = 1/6)
-sum(dbinom(0:10, 60, 1/6))
-```
 
 3.  What is the probability of obtaining *10 or more* sixes when you roll 60 dice one time?
 
-```{r}
-1 - pbinom(q = 9, size = 60, prob = 1/6)
-pbinom(q = 9, size = 60, prob = 1/6, lower.tail = FALSE)
-sum(dbinom(10:60, 60, 1/6))
-```
-
 4.  Plot the probability of obtaining 0, 1, 2, 3, ..., 60 sixes when you roll 60 dice one time.
 
-```{r}
-x <- 0:60
-plot(x, dbinom(x, 60, 1/6), type = 'h')
-```
-
-
-5.  The national prevalence of texting while driving among U.S. high school boys was found to be 46.4% ([Olsen et al 2013][1]). If you survey 200 boys in a high school class and 80 of them admit to texting while driving, how likely is this to occur if the prevalence in this group is actually the same as nationally (i.e., what is the probability that 80 or fewer boys admit to texting while driving)?
-
-```{r}
-pbinom(80, 200, p = 0.464)
-```
+5.  The national prevalence of texting while driving among U.S. high school boys was found to be 46.4% ([Olsen et al 2013][1]). If you survey 200 boys in a high school class and 80 of them admit to texting while driving, how likely is this to occur (i.e., what is the one-sided probability that 80 or fewer boys admit to texting while driving)?
 
 6.  Assume that the blood level of the experimental drug HRP258 is normally distributed with a mean of 70 and a standard deviation of 21. What is the probability that a person's level is between 50 and 100? 
 
-```{r}
-pnorm(100, mean = 70, sd = 21) - pnorm(50, 70, 21)
-```
-
 7.  What is the value of z that corresponds to the cumulative p value of 0.025 in the standard normal distribution? In a normal distribution with mean = 24 and standard deviation = 4?
 
-```{r}
-qnorm(0.025)
-qnorm(0.025, mean = 24, sd = 4)
-```
-
 6.  Assume systolic blood pressure in a certain group of patients is normally distributed with a mean of 102 and a standard deviation of 4.2. What is the probability of a patient having a systolic blood pressure of 97 or lower? What is the probability of a patient having a systolic blood pressure of 110 or higher? 120 or higher?
-
-```{r}
-pnorm(97, mean = 102, sd = 4.2)
-pnorm(110, mean = 102, sd = 4.2, lower.tail = F)
-pnorm(120, mean = 102, sd = 4.2, lower.tail = F)
-```
 
 7. Load the dataset `mgus` from the `survival` package. This dataset refers to monoclonal gammopathy of uncertain significance (`?mgus` for more information).
 
@@ -74,10 +34,5 @@ data(mgus)
 ```
 
 Is the albumin level at MGUS diagnosis normally distributed?
-
-```{r}
-hist(mgus$alb)
-qqnorm(mgus$alb)
-```
 
 [1]: http://pediatrics.aappublications.org/content/131/6/e1708.full
