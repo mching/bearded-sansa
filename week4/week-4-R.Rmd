@@ -24,8 +24,6 @@ For example, in the normal distribution, these functions are `dnorm`, `pnorm`, `
 
 7.  What is the value of z that corresponds to the cumulative p value of 0.025 in the standard normal distribution? In a normal distribution with mean = 24 and standard deviation = 4?
 
-6.  Assume systolic blood pressure in a certain group of patients is normally distributed with a mean of 102 and a standard deviation of 4.2. What is the probability of a patient having a systolic blood pressure of 97 or lower? What is the probability of a patient having a systolic blood pressure of 110 or higher? 120 or higher?
-
 7. Load the dataset `mgus` from the `survival` package. This dataset refers to monoclonal gammopathy of uncertain significance (`?mgus` for more information).
 
 ```{r}
