@@ -87,6 +87,12 @@ NPV
 Table[2, 2] / sum(Table[2, ])
 ```
 
+```{r}
+library(epiR)
+epi.tests(Table, ver= T)
+```
+
+
 ### Note on PPV and NPV
 I didn't specify how common *versicolor* and *virginica* irises are in the world (i.e., what is the prevalence of *versicolor* irises), which is important to know for PPV and NPV. In this example there are an equal number of *versicolor* and *virginica* (i.e., prevalance of *versicolor* = 0.50). The results for PPV and NPV will change depending on the actual frequency of *versicolor* and *virginica* irises.
 
