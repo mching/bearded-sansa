@@ -4,7 +4,7 @@ Week 5 R
 Simulate data for case control study. Prevalence of exposure in cases is 0.2, Prevalence of exposure in controls is 0.1. 
 
 ```{r}
-set.seed(8)
+set.seed(706)
 disease <- c(rep(1, 1000), rep(0, 1000))
 exposure <- c(rbinom(1000, 1, 0.2), rbinom(1000, 1, 0.1))
 ```
