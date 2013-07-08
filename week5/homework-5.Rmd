@@ -14,6 +14,8 @@ sem2
 
 Thirty heart disease patients are put on an exercise regimen. Twenty patients improve on the exercise stress test and ten don’t improve or get worse. Calculate the 95% confidence interval for the true proportion of heart disease patients who improve their fitness using this particular exercise regimen. Recall that proportions are normally distributed with a standard error of
 
+$\sqrt{\frac{p(1-p)}{n}}$
+
 ```{r}
 library(binom)
 binom.confint(20, 30, conf.level = 0.95, methods = "asymptotic")
