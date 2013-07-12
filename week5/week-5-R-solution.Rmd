@@ -1,0 +1,71 @@
+Week 5 R
+====
+
+We can simulate data for a case control study to practice calculating the odds ratio. Let's assume the prevalence of exposure in cases is 0.2, and the prevalence of exposure in controls is 0.1. We can generate some pseudo-random data using the code below.
+
+```{r}
+set.seed(706)
+disease <- c(rep(1, 1000), rep(0, 1000))
+exposure <- c(rbinom(1000, 1, 0.2), rbinom(1000, 1, 0.1))
+```
+
+Reorder factor (not actually necessary here since the OR will be the same)
+
+```{r}
+disease <- factor(disease, levels = 1:0, labels = c("case", "control"))
+exposure <- factor(exposure, levels = 1:0, labels = c("exposed", "not exposed"))
+Table1 <- table(exposure, disease)
+Table1
+```
+
+What is the odds ratio?
+
+```{r}
+a <- Table1[1, 1]
+b <- Table1[1, 2]
+c <- Table1[2, 1]
+d <- Table1[2, 2]
+OR1 <- (a/b) / (c/d)  # OR
+OR1
+```
+
+What is the standard error of the natural log of the odds ratio?
+
+```{r}
+seOR <- sqrt(1/a + 1/b + 1/c + 1/d)
+seOR
+```
+
+What is the 95% confidence interval for the natural log of the odds ratio?
+
+```{r}
+log(OR1) + qnorm(0.025)*seOR
+log(OR1) + qnorm(0.975)*seOR
+```
+
+What is the 95% confidence interval for the odds ratio?
+
+```{r}
+exp(log(OR1) + qnorm(0.025)*seOR)
+exp(log(OR1) + qnorm(0.975)*seOR)
+```
+
+There are a variety of functions that can help with this calculation.
+
+The package `epitools` has an `oddsratio` function that allows you to use different methods to calculate the odds ratio and 95% confidence interval. The `method = "wald"` argument gives you the method taught in class.
+```{r}
+library(epitools)
+oddsratio(Table1, method = "wald")
+```
+
+The `fisher.test` function from the `stats` package calculates the odds ratio using another method.
+
+```{r}
+fisher.test(Table1)
+```
+
+The `epi.2by2` function from the `epiR` package uses `fisher.test` to calculate the odds ratio and also supplies a variety of other useful estimates.
+```{r}
+library(epiR)
+epi.2by2(Table1, method = "case.control")
+```
