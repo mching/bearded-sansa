@@ -1,0 +1,126 @@
+MOOC: R Exercise 2
+====
+
+```{r}
+download.file(url = "https://s3-us-west-1.amazonaws.com/prod-edx/MedStats/RegressionExerciseDocs/mock_class_data.csv", destfile = "mock_class_data.csv", method = "curl")
+dat <- read.csv("./mock_class_data.csv")
+```
+
+
+### Q1. You are interested in determining whether varsity athletes in high school exercise more than those students who were not varsity athletes in high school.
+
+Look at data first. Exercise doesn't appear to be normally distributed but we do have a large number of individuals so maybe it won't be a problem.
+```{r}
+str(dat$exercise)
+hist(dat$exercise)
+```
+
+```{r}
+str(dat$Varsity)
+dat$Varsity.factor <- factor(dat$Varsity, levels = 1L:0L, labels = c("Varsity", "Non-Varsity"))
+```
+
+#### Q1a. What statistical test would you use to make this comparison? Why?
+
+T-test, two groups seems appropriate initially. What about the variances?
+
+```{r}
+tapply(dat$exercise, dat$Varsity.factor, sd)
+var.test(exercise ~ Varsity.factor, data = dat)
+```
+
+They are similar enough. We can try pooled variance test.
+
+#### Q1b. Perform this statistical test. Report the p-value for the test statistic. What are the mean exercise values for each group (varsity vs. non-varsity)? What is your conclusion?
+
+```{r}
+t.test(dat$exercise ~ dat$Varsity.factor, var.equal = TRUE)
+```
+Fail to reject the null hypothesis both ways.
+
+#### Q1c. Plot this relationship so that you can visually assess the data.
+
+```{r}
+boxplot(exercise ~ Varsity.factor, data = dat, ylab = "Hours of Exercise/Week", main = "College Student Exercise by High School Varsity Sports Experience")
+```
+
+### Q2. You are interested in seeing whether, on average, students love math more or love writing more. Using this cohort, you want to compare the “Mathlove” variable and the “Writinglove” variable to determine whether you observe a difference between the two groups.
+
+#### Q2a. What statistical test would you use to make this comparison? Why?
+
+Correlated data, possibly normally distributed, but there are large numbers.
+
+#### Q2b. Explain how this statistical test differs from the test in Q1.
+
+Takes advantage of correlated data.
+
+#### Q2c. Perform this statistical test. Report the p-value for the test statistic. On average, how different are the “love” scores? What is your conclusion?
+
+```{r}
+dat$dLove <- dat$Mathlove - dat$WritingLove
+t.test(dat$dLove)
+```
+Fail to reject the null hypothesis.
+
+### Q3. What is one assumption of the previous two tests? Check this condition for the variable “Writinglove” visually.
+
+Assumption of normality.
+
+```{r}
+hist(dat$WritingLove)
+qqnorm(dat$WritingLove)
+```
+
+### Q4. Based on your observation in Q3, you decide to check the other variables you used in Q1 and Q2. You decide to run the non-parametric version of the test in question 1. 
+
+#### Q4a. What statistical test would you use to make this comparison?
+
+Wilcoxon Rank-Sum test
+
+#### Q4b. Perform this statistical test. Report the p-value for the statistic. Does this change your conclusions from Q1?
+
+```{r}
+wilcox.test(exercise ~ Varsity.factor, data = dat)
+```
+
+### Q5. What menu option would you select to perform an ANOVA? You should be able to find this based on your understanding of the test and what it should be grouped near (i.e., where would it be most logical to find this?)
+
+You can use `lm` or `aov`
+
+### Q6. You are now interested in seeing whether there is a difference in whether you played a varsity sport in high school and whether you consider yourself ‘book smart’ or ‘street smart’. 
+
+```{r}
+str(dat$IsBookSmart)
+dat$IsBookSmart.factor <- factor(dat$IsBookSmart, levels = 1:0, labels = c("Book Smart", "Street Smart"))
+```
+
+#### Q6a. What statistical test would you use in this situation?
+
+Check for sparse data
+```{r}
+Table6 <- table(dat$IsBookSmart.factor, dat$Varsity.factor)
+Table6
+```
+
+The data are too sparse. Need to use Fisher's exact test.
+
+#### Q6b. Perform this statistical test. Report the p-value associated with this test. What is your conclusion?
+
+```{r}
+fisher.test(Table6)
+```
+
+### Q7. Calculate the risk ratio and the odds ratio (just the point estimates) for considering yourself ‘book smart’ given that you played a varsity sport in high school. (Will need to do this manually based on output from Q6)
+
+```{r}
+Table7 <- table(dat$Varsity.factor, dat$IsBookSmart.factor)
+Table7
+```
+
+Use of `epitools` can help to automate this.
+
+```{r}
+library(epitools)
+riskratio(Table7, method = "wald", rev = "both")
+oddsratio(Table7, method = "wald")
+```
