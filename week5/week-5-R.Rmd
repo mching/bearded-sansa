@@ -18,11 +18,11 @@ Table1 <- table(exposure, disease)
 Table1
 ```
 
-1. What is the odds ratio?
-2. What is the standard error of the natural log of the odds ratio?
-3. What is the 95% confidence interval for the natural log of the odds ratio?
-4. What is the 95% confidence interval for the odds ratio?
-5. Install the package `epitools` and use its `oddsratio` function to calculate the odds ratio. Is it the same? Why or why not?
+Q1. What is the odds ratio?
+Q2. What is the standard error of the natural log of the odds ratio?
+Q3. What is the 95% confidence interval for the natural log of the odds ratio?
+Q4. What is the 95% confidence interval for the odds ratio?
+Q5. Install the package `epitools` and use its `oddsratio` function to calculate the odds ratio.
 
 To set this up, start with:
 ```{r}
