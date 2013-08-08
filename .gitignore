@@ -2,10 +2,8 @@
 .Rhistory
 .RData
 *.docx
-*.html
-*.md
 *.csv
-final*
+final.*
 week1/figure
 week2/figure
 week3/figure
