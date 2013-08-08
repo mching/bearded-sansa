@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<!-- saved from url=(0014)about:internet -->
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+<title>Week 3 R Exercise</title>
+
+<style type="text/css">
+body, td {
+   font-family: sans-serif;
+   background-color: white;
+   font-size: 12px;
+   margin: 8px;
+}
+
+tt, code, pre {
+   font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
+}
+
+h1 { 
+   font-size:2.2em; 
+}
+
+h2 { 
+   font-size:1.8em; 
+}
+
+h3 { 
+   font-size:1.4em; 
+}
+
+h4 { 
+   font-size:1.0em; 
+}
+
+h5 { 
+   font-size:0.9em; 
+}
+
+h6 { 
+   font-size:0.8em; 
+}
+
+a:visited {
+   color: rgb(50%, 0%, 50%);
+}
+
+pre {	
+   margin-top: 0;
+   max-width: 95%;
+   border: 1px solid #ccc;
+   white-space: pre-wrap;
+}
+
+pre code {
+   display: block; padding: 0.5em;
+}
+
+code.r, code.cpp {
+   background-color: #F8F8F8;
+}
+
+table, td, th {
+  border: none;
+}
+
+blockquote {
+   color:#666666;
+   margin:0;
+   padding-left: 1em;
+   border-left: 0.5em #EEE solid;
+}
+
+hr {
+   height: 0px;
+   border-bottom: none;
+   border-top-width: thin;
+   border-top-style: dotted;
+   border-top-color: #999999;
+}
+
+@media print {
+   * { 
+      background: transparent !important; 
+      color: black !important; 
+      filter:none !important; 
+      -ms-filter: none !important; 
+   }
+
+   body { 
+      font-size:12pt; 
+      max-width:100%; 
+   }
+       
+   a, a:visited { 
+      text-decoration: underline; 
+   }
+
+   hr { 
+      visibility: hidden;
+      page-break-before: always;
+   }
+
+   pre, blockquote { 
+      padding-right: 1em; 
+      page-break-inside: avoid; 
+   }
+
+   tr, img { 
+      page-break-inside: avoid; 
+   }
+
+   img { 
+      max-width: 100% !important; 
+   }
+
+   @page :left { 
+      margin: 15mm 20mm 15mm 10mm; 
+   }
+     
+   @page :right { 
+      margin: 15mm 10mm 15mm 20mm; 
+   }
+
+   p, h2, h3 { 
+      orphans: 3; widows: 3; 
+   }
+
+   h2, h3 { 
+      page-break-after: avoid; 
+   }
+}
+
+</style>
+
+
+
+
+
+</head>
+
+<body>
+<h1>Week 3 R Exercise</h1>
+
+<h2>Introduction</h2>
+
+<p>I didn&#39;t write any exercises on probability since R doesn&#39;t really help you understand probability. However, sensitivity and specificity as well as positive and negative predictive values are relevant medical data analysis questions, particularly when you are trying to come up with a test that can predict a disease state.</p>
+
+<p>If you are given one continuous variable (test result) and one categorical variable (disease status), you can see whether the categorical variable can be predicted from the continuous one. One way to do this is to create a cutoff point for the test. Above a certain value, you can call the result positive and below it negative. You can then see what are the sensitivity, specificity, positive predictive value and negative predictive value when looking at the real result.</p>
+
+<p>There are many examples of this in medical diagnostic testing. The amount of activity of the elastase enzyme in a stool sample can be used to predict whether a patient has cystic fibrosis. However to do so, you have to have a cutoff point (i.e., below a certain level of elastase level, the patient likely has CF). Then you can run a trial to calculate sensitivity, specificity, PPV, and NPV.</p>
+
+<h2>Dataset</h2>
+
+<p>I couldn&#39;t find a good medical dataset example so for this example we will use the <code>iris</code> dataset. This dataset comes preinstalled with most R installations. Use <code>?iris</code> to find out more about the data.</p>
+
+<h2>Challenge</h2>
+
+<p>For simplicity, we will just look at the iris species <em>versicolor</em> and <em>virginica</em> and try to tell them apart by how long their petals are. If you want to pretend this is a medical problem, think of <em>versicolor</em> status as disease and petal length as a test result.</p>
+
+<h2>Questions</h2>
+
+<ol>
+<li><p>Load the <code>iris</code> data and subset out the <em>setosa</em> species, keeping only <em>versicolor</em> and <em>virginica</em> species. Save the resulting subset in a new data frame.</p></li>
+<li><p>Create a boxplot comparing the petal lengths of the two species (i.e., boxplot of petal length by species).</p></li>
+<li><p>Recode the <code>Petal.Length</code> variable into a new binomial variable depending on whether the petal length is &gt;= 5 or &lt; 5.</p></li>
+<li><p>Create a 2x2 table with the new variable as the rows and the species on the columns.</p></li>
+<li><p>Calculate the sensitivity of your test for diagnosing an iris as <code>versicolor</code> in this dataset. What is the specificity? Positive predictive value? Negative predictive value?</p></li>
+</ol>
+
+</body>
+
+</html>
+

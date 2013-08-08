@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<!-- saved from url=(0014)about:internet -->
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+<title>HRP 258 Week 2, R Exercise</title>
+
+<style type="text/css">
+body, td {
+   font-family: sans-serif;
+   background-color: white;
+   font-size: 12px;
+   margin: 8px;
+}
+
+tt, code, pre {
+   font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
+}
+
+h1 { 
+   font-size:2.2em; 
+}
+
+h2 { 
+   font-size:1.8em; 
+}
+
+h3 { 
+   font-size:1.4em; 
+}
+
+h4 { 
+   font-size:1.0em; 
+}
+
+h5 { 
+   font-size:0.9em; 
+}
+
+h6 { 
+   font-size:0.8em; 
+}
+
+a:visited {
+   color: rgb(50%, 0%, 50%);
+}
+
+pre {	
+   margin-top: 0;
+   max-width: 95%;
+   border: 1px solid #ccc;
+   white-space: pre-wrap;
+}
+
+pre code {
+   display: block; padding: 0.5em;
+}
+
+code.r, code.cpp {
+   background-color: #F8F8F8;
+}
+
+table, td, th {
+  border: none;
+}
+
+blockquote {
+   color:#666666;
+   margin:0;
+   padding-left: 1em;
+   border-left: 0.5em #EEE solid;
+}
+
+hr {
+   height: 0px;
+   border-bottom: none;
+   border-top-width: thin;
+   border-top-style: dotted;
+   border-top-color: #999999;
+}
+
+@media print {
+   * { 
+      background: transparent !important; 
+      color: black !important; 
+      filter:none !important; 
+      -ms-filter: none !important; 
+   }
+
+   body { 
+      font-size:12pt; 
+      max-width:100%; 
+   }
+       
+   a, a:visited { 
+      text-decoration: underline; 
+   }
+
+   hr { 
+      visibility: hidden;
+      page-break-before: always;
+   }
+
+   pre, blockquote { 
+      padding-right: 1em; 
+      page-break-inside: avoid; 
+   }
+
+   tr, img { 
+      page-break-inside: avoid; 
+   }
+
+   img { 
+      max-width: 100% !important; 
+   }
+
+   @page :left { 
+      margin: 15mm 20mm 15mm 10mm; 
+   }
+     
+   @page :right { 
+      margin: 15mm 10mm 15mm 20mm; 
+   }
+
+   p, h2, h3 { 
+      orphans: 3; widows: 3; 
+   }
+
+   h2, h3 { 
+      page-break-after: avoid; 
+   }
+}
+
+</style>
+
+
+
+
+
+</head>
+
+<body>
+<h1>HRP 258 Week 2, R Exercise</h1>
+
+<h2>Risk and Rate Ratios</h2>
+
+<p>This exercise will help you learn how to calculate risk and rate ratios and differences using R or Deducer.</p>
+
+<h3>Loading the Data</h3>
+
+<p>We will use the <code>rats</code> dataset from the <code>survival</code> package.  </p>
+
+<p>If you don&#39;t already have this package for some reason, type:</p>
+
+<pre><code>install.packages(&quot;survival&quot;)
+</code></pre>
+
+<p>To load the dataset type the following:</p>
+
+<pre><code>library(survival)
+data(rats)
+</code></pre>
+
+<p>To learn more about the dataset, type <code>?rats</code>.  </p>
+
+<p>We will be interested in only 3 variables: <code>rx</code>, <code>time</code>, and <code>status</code>. As you can see in the help page for the dataset, <code>rx</code> is treatment (1=drug, 0=control), <code>time</code> is time to tumor or last follow-up, and <code>status</code> is event status (1=tumor, 0=censored/no tumor).</p>
+
+<h3>Questions</h3>
+
+<ol>
+<li>Convert <code>rx</code> and <code>status</code> into factor variables. If you can, also label the levels with the appropriate names (i.e., drug, control, tumor, censored).</li>
+<li>Create a 2x2 table with <code>rx</code> on the rows and <code>status</code> on the columns.</li>
+<li>Using the table, what is the risk of tumor in the drug (<code>rx</code> = 1) group? What is the risk of tumor in the control (<code>rx</code> = 0) group?</li>
+<li>What is the risk ratio of tumor in the drug group versus the control group? What is the odds ratio? What is the risk difference? </li>
+<li>How much person-time (rat-time?) was observed in rats receiving the drug (<code>rx</code> = 1)? How much person-time was observed in rats receiving the control (<code>rx</code> = 0)?</li>
+<li>Create a 2x2 table with the rows being the <code>rx</code> groups and the first column being the number of tumors in each group and the second column being person time in each group.</li>
+<li>What is the rate ratio comparing tumor rate in the drug and control groups? What is the rate difference? What is the number needed to harm?</li>
+</ol>
+
+</body>
+
+</html>
+

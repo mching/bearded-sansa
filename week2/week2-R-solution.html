@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<!-- saved from url=(0014)about:internet -->
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+<title>HRP 258 Week 2, R Exercise</title>
+
+<style type="text/css">
+body, td {
+   font-family: sans-serif;
+   background-color: white;
+   font-size: 12px;
+   margin: 8px;
+}
+
+tt, code, pre {
+   font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
+}
+
+h1 { 
+   font-size:2.2em; 
+}
+
+h2 { 
+   font-size:1.8em; 
+}
+
+h3 { 
+   font-size:1.4em; 
+}
+
+h4 { 
+   font-size:1.0em; 
+}
+
+h5 { 
+   font-size:0.9em; 
+}
+
+h6 { 
+   font-size:0.8em; 
+}
+
+a:visited {
+   color: rgb(50%, 0%, 50%);
+}
+
+pre {	
+   margin-top: 0;
+   max-width: 95%;
+   border: 1px solid #ccc;
+   white-space: pre-wrap;
+}
+
+pre code {
+   display: block; padding: 0.5em;
+}
+
+code.r, code.cpp {
+   background-color: #F8F8F8;
+}
+
+table, td, th {
+  border: none;
+}
+
+blockquote {
+   color:#666666;
+   margin:0;
+   padding-left: 1em;
+   border-left: 0.5em #EEE solid;
+}
+
+hr {
+   height: 0px;
+   border-bottom: none;
+   border-top-width: thin;
+   border-top-style: dotted;
+   border-top-color: #999999;
+}
+
+@media print {
+   * { 
+      background: transparent !important; 
+      color: black !important; 
+      filter:none !important; 
+      -ms-filter: none !important; 
+   }
+
+   body { 
+      font-size:12pt; 
+      max-width:100%; 
+   }
+       
+   a, a:visited { 
+      text-decoration: underline; 
+   }
+
+   hr { 
+      visibility: hidden;
+      page-break-before: always;
+   }
+
+   pre, blockquote { 
+      padding-right: 1em; 
+      page-break-inside: avoid; 
+   }
+
+   tr, img { 
+      page-break-inside: avoid; 
+   }
+
+   img { 
+      max-width: 100% !important; 
+   }
+
+   @page :left { 
+      margin: 15mm 20mm 15mm 10mm; 
+   }
+     
+   @page :right { 
+      margin: 15mm 10mm 15mm 20mm; 
+   }
+
+   p, h2, h3 { 
+      orphans: 3; widows: 3; 
+   }
+
+   h2, h3 { 
+      page-break-after: avoid; 
+   }
+}
+
+</style>
+
+
+
+
+
+</head>
+
+<body>
+<h1>HRP 258 Week 2, R Exercise</h1>
+
+<h2>Risk and Rate Ratios</h2>
+
+<p>This exercise will help you learn how to calculate risk and rate ratios and differences using R or Deducer.</p>
+
+<h3>Loading the Data</h3>
+
+<p>We will use the <code>rats</code> dataset from the <code>survival</code> package.  </p>
+
+<p>If you don&#39;t already have this package for some reason, type:</p>
+
+<pre><code>install.packages(&quot;survival&quot;)
+</code></pre>
+
+<p>To load the dataset type the following:</p>
+
+<pre><code>library(survival)
+</code></pre>
+
+<pre><code>## Loading required package: splines
+</code></pre>
+
+<pre><code>data(rats)
+</code></pre>
+
+<p>To learn more about the dataset, type <code>?rats</code>.  </p>
+
+<p>We will be interested in only 3 variables: <code>rx</code>, <code>time</code>, and <code>status</code>. As you can see in the help page for the dataset, <code>rx</code> is treatment (1=drug, 0=control), <code>time</code> is time to tumor or last follow-up, and <code>status</code> is event status (1=tumor, 0=censored). In this case, censored means that there was no tumor the last time they looked at that rat.</p>
+
+<h3>Questions</h3>
+
+<p>Q1. Convert <code>rx</code> and <code>status</code> into factor variables. If you can, also label the levels with the appropriate names (i.e., drug, control, tumor, censored).</p>
+
+<pre><code>rats$status.factor &lt;- factor(rats$status, levels = 1:0, labels = c(&quot;tumor&quot;, 
+    &quot;censored&quot;))
+rats$rx.factor &lt;- factor(rats$rx, levels = 1:0, labels = c(&quot;drug&quot;, &quot;control&quot;))
+</code></pre>
+
+<p>Q2. Create a 2x2 contingency table with <code>rx</code> on the rows and <code>status</code> on the columns.</p>
+
+<pre><code>Table1 &lt;- with(rats, table(rx.factor, status.factor))
+Table1
+</code></pre>
+
+<pre><code>##          status.factor
+## rx.factor tumor censored
+##   drug       21       29
+##   control    19       81
+</code></pre>
+
+<p>Q3. Using this table, what is the risk of tumor in the drug (<code>rx</code> = 1) group? What is the risk of tumor in the control (<code>rx</code> = 0) group?</p>
+
+<pre><code>Table1risk &lt;- prop.table(Table1, margin = 1)
+Table1risk
+</code></pre>
+
+<pre><code>##          status.factor
+## rx.factor tumor censored
+##   drug     0.42     0.58
+##   control  0.19     0.81
+</code></pre>
+
+<p>Q4. Using this table, what is the risk ratio of tumor in the drug group versus the control group? What is the odds ratio? What is the risk difference? </p>
+
+<pre><code>Table1risk[1, 1]/Table1risk[2, 1]  # Risk ratio
+</code></pre>
+
+<pre><code>## [1] 2.211
+</code></pre>
+
+<pre><code>(Table1[1, 1]/Table1[1, 2])/(Table1[2, 1]/Table1[2, 2])  # Odds ratio
+</code></pre>
+
+<pre><code>## [1] 3.087
+</code></pre>
+
+<pre><code>Table1risk[1, 1] - Table1risk[2, 1]  # Risk difference
+</code></pre>
+
+<pre><code>## [1] 0.23
+</code></pre>
+
+<p>Q5. How much person-time (rat-time?) was observed in rats receiving the drug (<code>rx</code> = 1)? How much person-time was observed in rats receiving the control (<code>rx</code> = 0)? There are many ways to do this but one way would be to subset the data on <code>rx</code> = 1 and see what is the sum of <code>time</code>. Then re-subset on <code>rx</code> = 0 and see how much person-time there is.</p>
+
+<pre><code>drug.time &lt;- with(rats, sum(time[rx == 1]))  # drug group
+drug.time
+</code></pre>
+
+<pre><code>## [1] 4358
+</code></pre>
+
+<pre><code>control.time &lt;- with(rats, sum(time[rx == 0]))  # control group
+control.time
+</code></pre>
+
+<pre><code>## [1] 9056
+</code></pre>
+
+<p>Another solution is to use <code>tapply</code> to subgroup the data.</p>
+
+<pre><code>person.time &lt;- tapply(rats$time, rats$rx.factor, sum)
+person.time
+</code></pre>
+
+<pre><code>##    drug control 
+##    4358    9056
+</code></pre>
+
+<p>Q6. Create a 2x2 table with the rows being the <code>rx</code> groups and the first column being the number of tumors in each group and the second column being person time in each group.</p>
+
+<pre><code>Table2 &lt;- matrix(c(Table1[, 1], drug.time, control.time), nrow = 2, ncol = 2)
+colnames(Table2) &lt;- c(&quot;tumors&quot;, &quot;person-time&quot;)
+rownames(Table2) &lt;- c(&quot;drug&quot;, &quot;control&quot;)
+Table2
+</code></pre>
+
+<pre><code>##         tumors person-time
+## drug        21        4358
+## control     19        9056
+</code></pre>
+
+<p>Q7. What is the rate ratio comparing tumor incidence in the drug and control groups? What is the rate difference? What is the number needed to harm?</p>
+
+<pre><code>rate.drug &lt;- Table2[1, 1]/Table2[1, 2]
+rate.control &lt;- Table2[2, 1]/Table2[2, 2]
+rate.drug/rate.control  # rate ratio
+</code></pre>
+
+<pre><code>## [1] 2.297
+</code></pre>
+
+<pre><code>rate.drug - rate.control  # rate difference
+</code></pre>
+
+<pre><code>## [1] 0.002721
+</code></pre>
+
+<pre><code>1/(rate.drug - rate.control)  # NNT
+</code></pre>
+
+<pre><code>## [1] 367.6
+</code></pre>
+
+<p>An alternate way to do this is to use the <code>epiR</code> package. This package has a function called <code>epi.2by2</code> that automates much of the calculations above. The only issue is that it requires you to give it tables in a specific orientation (exposures or treatments on the rows and disease on the columns). For more information, see the <code>epiR</code> documentation. To install it, type <code>install.packages(&quot;epiR&quot;)</code> at the console.</p>
+
+<pre><code>library(epiR)
+</code></pre>
+
+<pre><code>## Package epiR 0.9-48 is loaded
+</code></pre>
+
+<pre><code>## Type help(epi.about) for summary information
+</code></pre>
+
+<p>Analysis of table containing risk data</p>
+
+<pre><code>epi.2by2(Table1, method = &quot;cohort.count&quot;)
+</code></pre>
+
+<pre><code>##              Disease +    Disease -      Total        Inc risk *
+## Exposed +           21           29         50              42.0
+## Exposed -           19           81        100              19.0
+## Total               40          110        150              26.7
+##                  Odds
+## Exposed +       0.724
+## Exposed -       0.235
+## Total           0.364
+## 
+## Point estimates and 95 % CIs:
+## ---------------------------------------------------------
+## Inc risk ratio                         2.21 (1.31, 3.72)
+## Odds ratio                             3.06 (1.36, 7)
+## Attrib risk *                          23 (7.31, 38.69)
+## Attrib risk in population *            7.67 (-2.78, 18.12)
+## Attrib fraction in exposed (%)         54.76 (23.95, 73.09)
+## Attrib fraction in population (%)      28.75 (5.69, 46.17)
+## ---------------------------------------------------------
+##  * Cases per 100 population units
+</code></pre>
+
+<p>Analysis of table containing rate data</p>
+
+<pre><code>epi.2by2(Table2, method = &quot;cohort.time&quot;)
+</code></pre>
+
+<pre><code>##              Disease +    Time at risk        Inc rate *
+## Exposed +           21            4358             0.482
+## Exposed -           19            9056             0.210
+## Total               40           13414             0.298
+## 
+## Point estimates and 95 % CIs:
+## ---------------------------------------------------------
+## Inc rate ratio                           2.3 (1.18, 4.52)
+## Attrib rate *                            0.27 (0.05, 0.5)
+## Attrib rate in population *              0.09 (-0.04, 0.22)
+## Attrib fraction in exposed (%)           56.46 (14.92, 77.86)
+## Attrib fraction in population (%)        29.64 (19.31, 38.5)
+## ---------------------------------------------------------
+##  * Cases per 100 units of population time at risk
+</code></pre>
+
+<p>NNT. Multiply by 100 because the denominator is in cases per 100 units of person time.  </p>
+
+<pre><code>1/epi.2by2(Table2, method = &quot;cohort.time&quot;, verbose = T)$AR * 100
+</code></pre>
+
+<pre><code>##     est    se lower upper
+## 1 367.6 864.7  2202 200.5
+</code></pre>
+
+</body>
+
+</html>
+

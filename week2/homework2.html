@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<!-- saved from url=(0014)about:internet -->
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+<title>Homework 2</title>
+
+<style type="text/css">
+body, td {
+   font-family: sans-serif;
+   background-color: white;
+   font-size: 12px;
+   margin: 8px;
+}
+
+tt, code, pre {
+   font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
+}
+
+h1 { 
+   font-size:2.2em; 
+}
+
+h2 { 
+   font-size:1.8em; 
+}
+
+h3 { 
+   font-size:1.4em; 
+}
+
+h4 { 
+   font-size:1.0em; 
+}
+
+h5 { 
+   font-size:0.9em; 
+}
+
+h6 { 
+   font-size:0.8em; 
+}
+
+a:visited {
+   color: rgb(50%, 0%, 50%);
+}
+
+pre {	
+   margin-top: 0;
+   max-width: 95%;
+   border: 1px solid #ccc;
+   white-space: pre-wrap;
+}
+
+pre code {
+   display: block; padding: 0.5em;
+}
+
+code.r, code.cpp {
+   background-color: #F8F8F8;
+}
+
+table, td, th {
+  border: none;
+}
+
+blockquote {
+   color:#666666;
+   margin:0;
+   padding-left: 1em;
+   border-left: 0.5em #EEE solid;
+}
+
+hr {
+   height: 0px;
+   border-bottom: none;
+   border-top-width: thin;
+   border-top-style: dotted;
+   border-top-color: #999999;
+}
+
+@media print {
+   * { 
+      background: transparent !important; 
+      color: black !important; 
+      filter:none !important; 
+      -ms-filter: none !important; 
+   }
+
+   body { 
+      font-size:12pt; 
+      max-width:100%; 
+   }
+       
+   a, a:visited { 
+      text-decoration: underline; 
+   }
+
+   hr { 
+      visibility: hidden;
+      page-break-before: always;
+   }
+
+   pre, blockquote { 
+      padding-right: 1em; 
+      page-break-inside: avoid; 
+   }
+
+   tr, img { 
+      page-break-inside: avoid; 
+   }
+
+   img { 
+      max-width: 100% !important; 
+   }
+
+   @page :left { 
+      margin: 15mm 20mm 15mm 10mm; 
+   }
+     
+   @page :right { 
+      margin: 15mm 10mm 15mm 20mm; 
+   }
+
+   p, h2, h3 { 
+      orphans: 3; widows: 3; 
+   }
+
+   h2, h3 { 
+      page-break-after: avoid; 
+   }
+}
+
+</style>
+
+
+
+
+
+</head>
+
+<body>
+<h1>Homework 2</h1>
+
+<p>Input separate tables for person time and risks to make it easier for later calculations</p>
+
+<pre><code>Table.person.time &lt;- matrix(c(20, 4, 2698, 2699), 2, 2)
+rownames(Table.person.time) &lt;- c(&quot;Vioxx&quot;, &quot;naproxen&quot;)
+colnames(Table.person.time) &lt;- c(&quot;Heart attacks&quot;, &quot;Person-years&quot;)
+Table.person.time
+</code></pre>
+
+<pre><code>##          Heart attacks Person-years
+## Vioxx               20         2698
+## naproxen             4         2699
+</code></pre>
+
+<pre><code>
+Table.events &lt;- matrix(c(20, 4, 4047 - 20, 4029 - 4), 2, 2)
+rownames(Table.events) &lt;- c(&quot;Vioxx&quot;, &quot;naproxen&quot;)
+colnames(Table.events) &lt;- c(&quot;Heart attacks&quot;, &quot;No heart attacks&quot;)
+Table.events
+</code></pre>
+
+<pre><code>##          Heart attacks No heart attacks
+## Vioxx               20             4027
+## naproxen             4             4025
+</code></pre>
+
+<h3>Question 1.</h3>
+
+<p>What is the absolute difference in the incidence rates of heart attacks for Vioxx versus Naproxen? Please calculate as events per 1000 person-years and round to the nearest tenth (e.g., x.x); do not write the units when entering your answer.</p>
+
+<pre><code>Vioxx.rate &lt;- Table.person.time[1, 1]/Table.person.time[1, 2]
+Vioxx.rate
+</code></pre>
+
+<pre><code>## [1] 0.007413
+</code></pre>
+
+<pre><code>naproxen.rate &lt;- Table.person.time[2, 1]/Table.person.time[2, 2]
+naproxen.rate
+</code></pre>
+
+<pre><code>## [1] 0.001482
+</code></pre>
+
+<pre><code>round(1000 * (Vioxx.rate - naproxen.rate), digits = 1)
+</code></pre>
+
+<pre><code>## [1] 5.9
+</code></pre>
+
+<p>Also you can use the <code>epi.2by2</code> function from the <code>epiR</code> package to calculate the most commonly used estimates from the table.</p>
+
+<pre><code>library(epiR)
+</code></pre>
+
+<pre><code>## Loading required package: survival
+</code></pre>
+
+<pre><code>## Loading required package: splines
+</code></pre>
+
+<pre><code>## Package epiR 0.9-48 is loaded
+</code></pre>
+
+<pre><code>## Type help(epi.about) for summary information
+</code></pre>
+
+<pre><code>epi.2by2(Table.person.time, method = &quot;cohort.time&quot;)
+</code></pre>
+
+<pre><code>##              Disease +    Time at risk        Inc rate *
+## Exposed +           20            2698             0.741
+## Exposed -            4            2699             0.148
+## Total               24            5397             0.445
+## 
+## Point estimates and 95 % CIs:
+## ---------------------------------------------------------
+## Inc rate ratio                           5 (1.68, 20.13)
+## Attrib rate *                            0.59 (0.24, 0.95)
+## Attrib rate in population *              0.3 (0.07, 0.53)
+## Attrib fraction in exposed (%)           80.01 (40.32, 95.03)
+## Attrib fraction in population (%)        66.67 (42.65, 79.93)
+## ---------------------------------------------------------
+##  * Cases per 100 units of population time at risk
+</code></pre>
+
+<h3>Question 2.</h3>
+
+<p>What is the absolute difference in the risk of heart attacks for Vioxx versus Naproxen? Please report as a percentage, rounded to the nearest hundredth (e.g., .xx). Do not include the % sign.</p>
+
+<pre><code>Vioxx.risk &lt;- Table.events[1, 1]/sum(Table.events[1, ])
+naproxen.risk &lt;- Table.events[2, 1]/sum(Table.events[2, ])
+(Vioxx.risk - naproxen.risk) * 100
+</code></pre>
+
+<pre><code>## [1] 0.3949
+</code></pre>
+
+<p>Again, you can also use the <code>epi.2by2</code> function to do this:</p>
+
+<pre><code>epi.2by2(Table.events)
+</code></pre>
+
+<pre><code>##              Disease +    Disease -      Total        Inc risk *
+## Exposed +           20         4027       4047            0.4942
+## Exposed -            4         4025       4029            0.0993
+## Total               24         8052       8076            0.2972
+##                  Odds
+## Exposed +    0.004966
+## Exposed -    0.000994
+## Total        0.002981
+## 
+## Point estimates and 95 % CIs:
+## ---------------------------------------------------------
+## Inc risk ratio                         4.98 (1.7, 14.55)
+## Odds ratio                             5 (1.67, 20.11)
+## Attrib risk *                          0.39 (0.16, 0.63)
+## Attrib risk in population *            0.2 (0.04, 0.35)
+## Attrib fraction in exposed (%)         79.91 (41.28, 93.13)
+## Attrib fraction in population (%)      66.59 (18.32, 86.34)
+## ---------------------------------------------------------
+##  * Cases per 100 population units
+</code></pre>
+
+<h3>Question 3.</h3>
+
+<p>What is the rate ratio comparing Vioxx with Naproxen? Please round to the nearest tenth (e.g., x.x).</p>
+
+<pre><code>Vioxx.rate/naproxen.rate
+</code></pre>
+
+<pre><code>## [1] 5.002
+</code></pre>
+
+<h3>Question 4.</h3>
+
+<p>What is the number needed to harm? Round to the nearest whole number.</p>
+
+<p>Number needed to harm is the inverse of the absolute risk difference.</p>
+
+<pre><code>1/(Vioxx.rate - naproxen.rate)
+</code></pre>
+
+<pre><code>## [1] 168.6
+</code></pre>
+
+<p>We can extract risk difference (Attrib risk, or AR) from the <code>epi.2by2</code> output with the <code>verbose = T</code> option.</p>
+
+<pre><code>risk.diff &lt;- epi.2by2(Table.events, method = &quot;cohort.count&quot;, verbose = T)$AR/100
+risk.diff
+</code></pre>
+
+<pre><code>##        est       se weight   lower    upper
+## 1 0.003949 0.001209   6843 0.00158 0.006318
+</code></pre>
+
+<pre><code>1/risk.diff  # NNT
+</code></pre>
+
+<pre><code>##     est    se    weight lower upper
+## 1 253.2 827.2 0.0001461   633 158.3
+</code></pre>
+
+<h3>Question 5.</h3>
+
+<p>What percent of single-pill users were hospitalized during follow-up? (do not include the % sign)</p>
+
+<pre><code>one.pill.risk &lt;- 7.7/100
+</code></pre>
+
+<h3>Question 6.</h3>
+
+<p>What percent of three-or-more-pill users were hospitalized during follow-up? (eg. x.x, do not include the % sign)</p>
+
+<pre><code>three.pill.risk &lt;- 9.9/100
+</code></pre>
+
+<h3>Question 7.</h3>
+
+<p>Calculate the risk ratio comparing the risk of hospitalization in single-pill users versus three-or-more-pill users. Round to the nearest hundredth (e.g., .xx).</p>
+
+<pre><code>one.pill.risk/three.pill.risk
+</code></pre>
+
+<pre><code>## [1] 0.7778
+</code></pre>
+
+<h3>Question 8.</h3>
+
+<p>Calculate the odds ratio comparing the odds of hospitalization in single-pill users versus three-or-more-pill users. Round to the nearest hundredth (e.g., .xx).</p>
+
+<pre><code>one.pill.odds &lt;- one.pill.risk/(1 - one.pill.risk)
+three.pill.odds &lt;- three.pill.risk/(1 - three.pill.risk)
+</code></pre>
+
+<p>Odds ratio</p>
+
+<pre><code>one.pill.odds/three.pill.odds
+</code></pre>
+
+<pre><code>## [1] 0.7592
+</code></pre>
+
+<h3>Question 10.</h3>
+
+<p>The adjusted odds ratio comparing the 1.0 mg tesofensine group with the placebo group for the outcome of a weight loss of 5kg or more was 31.5. Calculate the unadjusted risk ratio for this comparison (using the percentages given in the table). Round to the nearest tenth (e.g., x.x).</p>
+
+<pre><code>Table10 &lt;- matrix(c(42, 13, 4, 32), 2, 2)
+rownames(Table10) &lt;- c(&quot;tesofensine 1.0 mg&quot;, &quot;placebo&quot;)
+colnames(Table10) &lt;- c(&quot;loss &gt;= 5 kg&quot;, &quot;loss &lt; 5 kg&quot;)
+Table10
+</code></pre>
+
+<pre><code>##                    loss &gt;= 5 kg loss &lt; 5 kg
+## tesofensine 1.0 mg           42           4
+## placebo                      13          32
+</code></pre>
+
+<pre><code>Table10.prop &lt;- prop.table(Table10, 1)
+Table10.prop
+</code></pre>
+
+<pre><code>##                    loss &gt;= 5 kg loss &lt; 5 kg
+## tesofensine 1.0 mg       0.9130     0.08696
+## placebo                  0.2889     0.71111
+</code></pre>
+
+<pre><code>Table10.prop[1, 1]/Table10.prop[2, 1]
+</code></pre>
+
+<pre><code>## [1] 3.161
+</code></pre>
+
+<p>The accepted answer was 3.1, presumably because of rounding.</p>
+
+<p>Alternately we can use the <code>epi.2by2</code> function from the <code>epiR</code> package. See <code>?epi.2by2</code> to see how you have to arrange the tables you give the function.</p>
+
+<pre><code>library(epiR)
+epi.2by2(Table10, method = &quot;cohort.count&quot;)
+</code></pre>
+
+<pre><code>##              Disease +    Disease -      Total        Inc risk *
+## Exposed +           42            4         46              91.3
+## Exposed -           13           32         45              28.9
+## Total               55           36         91              60.4
+##                  Odds
+## Exposed +      10.500
+## Exposed -       0.406
+## Total           1.528
+## 
+## Point estimates and 95 % CIs:
+## ---------------------------------------------------------
+## Inc risk ratio                         3.16 (1.98, 5.04)
+## Odds ratio                             24.64 (7.01, 114.27)
+## Attrib risk *                          62.42 (46.87, 77.96)
+## Attrib risk in population *            31.55 (14.93, 48.17)
+## Attrib fraction in exposed (%)         68.36 (49.53, 80.17)
+## Attrib fraction in population (%)      52.2 (30.66, 67.05)
+## ---------------------------------------------------------
+##  * Cases per 100 population units
+</code></pre>
+
+<h3>Question 11.</h3>
+
+<p>The adjusted odds ratio comparing the1.0 mg tesofensine group with the placebo group for the outcome of a weight loss of 5kg or more was 31.5. Calculate the adjusted risk ratio for this comparison using the conversion formula below. Round to the nearest tenth (e.g., x.x).</p>
+
+<pre><code>OR.1 &lt;- 31.5
+P.ref &lt;- Table10.prop[2, 1]
+OR.1/((1 - P.ref) + (P.ref * OR.1))
+</code></pre>
+
+<pre><code>## [1] 3.211
+</code></pre>
+
+</body>
+
+</html>
+

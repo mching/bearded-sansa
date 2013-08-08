@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<!-- saved from url=(0014)about:internet -->
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+<title>Unit 3 Homework</title>
+
+<style type="text/css">
+body, td {
+   font-family: sans-serif;
+   background-color: white;
+   font-size: 12px;
+   margin: 8px;
+}
+
+tt, code, pre {
+   font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
+}
+
+h1 { 
+   font-size:2.2em; 
+}
+
+h2 { 
+   font-size:1.8em; 
+}
+
+h3 { 
+   font-size:1.4em; 
+}
+
+h4 { 
+   font-size:1.0em; 
+}
+
+h5 { 
+   font-size:0.9em; 
+}
+
+h6 { 
+   font-size:0.8em; 
+}
+
+a:visited {
+   color: rgb(50%, 0%, 50%);
+}
+
+pre {	
+   margin-top: 0;
+   max-width: 95%;
+   border: 1px solid #ccc;
+   white-space: pre-wrap;
+}
+
+pre code {
+   display: block; padding: 0.5em;
+}
+
+code.r, code.cpp {
+   background-color: #F8F8F8;
+}
+
+table, td, th {
+  border: none;
+}
+
+blockquote {
+   color:#666666;
+   margin:0;
+   padding-left: 1em;
+   border-left: 0.5em #EEE solid;
+}
+
+hr {
+   height: 0px;
+   border-bottom: none;
+   border-top-width: thin;
+   border-top-style: dotted;
+   border-top-color: #999999;
+}
+
+@media print {
+   * { 
+      background: transparent !important; 
+      color: black !important; 
+      filter:none !important; 
+      -ms-filter: none !important; 
+   }
+
+   body { 
+      font-size:12pt; 
+      max-width:100%; 
+   }
+       
+   a, a:visited { 
+      text-decoration: underline; 
+   }
+
+   hr { 
+      visibility: hidden;
+      page-break-before: always;
+   }
+
+   pre, blockquote { 
+      padding-right: 1em; 
+      page-break-inside: avoid; 
+   }
+
+   tr, img { 
+      page-break-inside: avoid; 
+   }
+
+   img { 
+      max-width: 100% !important; 
+   }
+
+   @page :left { 
+      margin: 15mm 20mm 15mm 10mm; 
+   }
+     
+   @page :right { 
+      margin: 15mm 10mm 15mm 20mm; 
+   }
+
+   p, h2, h3 { 
+      orphans: 3; widows: 3; 
+   }
+
+   h2, h3 { 
+      page-break-after: avoid; 
+   }
+}
+
+</style>
+
+
+
+<!-- MathJax scripts -->
+<script type="text/javascript" src="https://c328740.ssl.cf1.rackcdn.com/mathjax/2.0-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+
+</head>
+
+<body>
+<h1>Unit 3 Homework</h1>
+
+<h2>Question 1:</h2>
+
+<h3>In 1980 (before the era of in-vitro fertilization), there were 3,612,258 births in the United States (according to the U.S. Census Bureau), of which 68,339 births were to twins and 1,337 births were to triplets or more.</h3>
+
+<h3>What was the probability of having multiples (twins or more) in 1980?</h3>
+
+<h3>Enter as a percent but do not include the % sign. Round to the nearest tenth (e.g., x.x).</h3>
+
+<pre><code>prob.multip &lt;- (68339 + 1337)/3612258
+round(prob.multip * 100, 1)
+</code></pre>
+
+<pre><code>## [1] 1.9
+</code></pre>
+
+<h2>Question 2:</h2>
+
+<h3>What was the probability of a woman giving birth to multiples twice in a row in the pre-IVF era? (Assume that the probabilities for 1980 are representative of the pre-IVF era.)</h3>
+
+<h3>Enter as a percent but do not include the % sign. Round to 3 decimal places (e.g., .xxx).</h3>
+
+<p>Assuming that having multiple births is a random event (i.e., women who have had a multiple birth are not more likely to have another multiple birth), we multiply the probability of a multiple birth by itself.</p>
+
+<pre><code>prob.2.multip &lt;- prob.multip^2
+round(prob.2.multip * 100, 3)
+</code></pre>
+
+<pre><code>## [1] 0.037
+</code></pre>
+
+<h2>Question 3:</h2>
+
+<h3>If a woman had 10 births in her lifetime in the pre-IVF era, what was the chance that at least one of those births was to multiples? (Assume that the probabilities for 1980 are representative of the pre-IVF era.)</h3>
+
+<h3>Enter as a percent but do not include the % sign. Round to the nearest tenth (e.g., xx.x).</h3>
+
+<p>The probability of at least one event in a given number of trials is the same as 1 - the probability of no events in that number of trials. The probability of no events in one trial is 1 - the probability of that event happening once. The probability of no events in 10 trials is this to the 10th power.</p>
+
+<pre><code>prob.no.multip &lt;- (1 - prob.multip)
+prob.no.multip.10 &lt;- prob.no.multip^10
+prob.at.least.1.multip &lt;- 1 - prob.no.multip.10
+round(prob.at.least.1.multip * 100, 1)
+</code></pre>
+
+<pre><code>## [1] 17.7
+</code></pre>
+
+<h2>Question 4:</h2>
+
+<h3>Suppose that the probability of surviving for 5-years after being diagnosed with a particular cancer is 0.60; and the probability of surviving for 10 years is 0.20. If a person survives 5 years, what is the probability that she will survive 10 years?</h3>
+
+<h3>Enter as a percent but do not include the % sign. The answer should be a whole number (e.g. xx).</h3>
+
+<p>If we call event A survival to 5 yrs and event B survival to 10 yrs.</p>
+
+<p>\[  P(A) = 0.6  \]
+\[  P(B) = 0.2  \]</p>
+
+<p>We are interested in survival to 10 yrs given survival to 5 yrs. </p>
+
+<p>\[  P(B|A) = \frac{P(A\&B)}{P(A)}  \]</p>
+
+<p>The probability of survival to 5 yrs and survival to 10 yrs is the same thing as survival to 10 yrs, 0.2.</p>
+
+<p>\[  P(B|A) = \frac{0.2}{0.6}  \]</p>
+
+<pre><code>round(0.2/0.6 * 100, 0)
+</code></pre>
+
+<pre><code>## [1] 33
+</code></pre>
+
+<h2>Question 5:</h2>
+
+<h3>A company has developed a diagnostic test to screen for antibiotic resistance in acne patients. A positive test means that the patient will be less likely to respond to treatment with a specific antibiotic; a negative test means that they will be more likely to respond. To determine the clinical utility of the test, researchers applied the test to 59 patients who were known non-responders to oxytetracycline and 72 patients who were known responders. Here are the results:</h3>
+
+<pre><code>Table5 &lt;- matrix(c(10, 49, 9, 63), nrow = 2)
+rownames(Table5) &lt;- c(&quot;Test positive&quot;, &quot;Test negative&quot;)
+colnames(Table5) &lt;- c(&quot;Non-responders&quot;, &quot;Responders&quot;)
+Table5
+</code></pre>
+
+<pre><code>##               Non-responders Responders
+## Test positive             10          9
+## Test negative             49         63
+</code></pre>
+
+<h3>What is the sensitivity of the test?</h3>
+
+<h3>Enter as a percent but do not include the % sign. Round to the nearest whole number.</h3>
+
+<pre><code>
+q5.sens &lt;- Table5[1, 1]/sum(Table5[, 1])
+round(100 * q5.sens, 0)
+</code></pre>
+
+<pre><code>## [1] 17
+</code></pre>
+
+<h2>Question 6:</h2>
+
+<h3>What is the specificity of the test?</h3>
+
+<h3>Enter as a percent but do not include the % sign. Round to the nearest whole number.</h3>
+
+<pre><code>q6.spec &lt;- Table5[2, 2]/sum(Table5[, 2])
+round(100 * q6.spec, 0)
+</code></pre>
+
+<pre><code>## [1] 88
+</code></pre>
+
+<h2>Question 7:</h2>
+
+<h3>The company believes that the prevalence of oxytetracycline resistance among acne patients in the general population is about 50%. Use this information to calculate the positive predictive value.</h3>
+
+<h3>Enter as a percent but do not include the % sign. Round to the nearest whole number.</h3>
+
+<p>We can estimate this using &ldquo;natural frequencies&rdquo;. Imagine we select 1000 people at random from the population. We can then assume that 50%, or 500 have resistance and 500 do not.</p>
+
+<p>We multiply the 500 with resistance by the test sensitivity to find out how many with the disease will test positive. </p>
+
+<pre><code>500 * q5.sens
+</code></pre>
+
+<pre><code>## [1] 84.75
+</code></pre>
+
+<p>We multiply the 500 without resistance by the test specificity to find out how many without the disease will test negative.</p>
+
+<pre><code>500 * q6.spec
+</code></pre>
+
+<pre><code>## [1] 437.5
+</code></pre>
+
+<table><thead>
+<tr>
+<th></th>
+<th align="center">Resistant</th>
+<th align="center">Not Resistant</th>
+<th align="center">Total</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>Test positive</td>
+<td align="center">84.75</td>
+<td align="center">?</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td>Test negative</td>
+<td align="center">?</td>
+<td align="center">437.5</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td>Total</td>
+<td align="center">500</td>
+<td align="center">500</td>
+<td align="center">1000</td>
+</tr>
+</tbody></table>
+
+<p>We can then fill in the question marks by subtacting from 500.</p>
+
+<pre><code>500 - q5.sens * 500
+</code></pre>
+
+<pre><code>## [1] 415.3
+</code></pre>
+
+<pre><code>500 - q6.spec * 500
+</code></pre>
+
+<pre><code>## [1] 62.5
+</code></pre>
+
+<table><thead>
+<tr>
+<th></th>
+<th align="center">Resistant</th>
+<th align="center">Not Resistant</th>
+<th align="center">Total</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>Test positive</td>
+<td align="center">84.75</td>
+<td align="center">62.5</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td>Test negative</td>
+<td align="center">415.25</td>
+<td align="center">437.5</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td>Total</td>
+<td align="center">500</td>
+<td align="center">500</td>
+<td align="center">1000</td>
+</tr>
+</tbody></table>
+
+<p>By adding across the rows, we can get the row totals.</p>
+
+<pre><code>q5.sens * 500 + (500 - q6.spec * 500)
+</code></pre>
+
+<pre><code>## [1] 147.2
+</code></pre>
+
+<pre><code>500 * q6.spec + (500 - q5.sens * 500)
+</code></pre>
+
+<pre><code>## [1] 852.8
+</code></pre>
+
+<table><thead>
+<tr>
+<th></th>
+<th align="center">Resistant</th>
+<th align="center">Not Resistant</th>
+<th align="center">Total</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>Test positive</td>
+<td align="center">84.75</td>
+<td align="center">62.5</td>
+<td align="center">147.25</td>
+</tr>
+<tr>
+<td>Test negative</td>
+<td align="center">415.25</td>
+<td align="center">437.5</td>
+<td align="center">852.75</td>
+</tr>
+<tr>
+<td>Total</td>
+<td align="center">500</td>
+<td align="center">500</td>
+<td align="center">1000</td>
+</tr>
+</tbody></table>
+
+<p>Positive predictive value can then be easily calculated:</p>
+
+<pre><code>q5.sens * 500/(q5.sens * 500 + (500 - q6.spec * 500))
+</code></pre>
+
+<pre><code>## [1] 0.5755
+</code></pre>
+
+<pre><code>round(100 * q5.sens * 500/(q5.sens * 500 + (500 - q6.spec * 500)), 0)
+</code></pre>
+
+<pre><code>## [1] 58
+</code></pre>
+
+<h2>Question 8:</h2>
+
+<h3>The company believes that the prevalence of oxytetracycline resistance among acne patients in the general population is about 50%. Use this information to calculate the negative predictive value.</h3>
+
+<h3>Enter as a percent but do not include the % sign. Round to the nearest whole number.</h3>
+
+<p>Using the prior table, we can again calculate the NPV easily.</p>
+
+<pre><code>round(500 * q6.spec/(500 * q6.spec + (500 - q5.sens * 500)) * 100, 0)
+</code></pre>
+
+<pre><code>## [1] 51
+</code></pre>
+
+<h2>Question 9:</h2>
+
+<h3>In a blind taste test, three panelists tasted five pizza brands—Godfather&#39;s, Papa John&#39;s, Pizza Hut, zpizza and Ledo Pizza. All three panelists rated Godfather’s pizza dead last. What’s the probability that this outcome happened purely by chance?</h3>
+
+<h3>In other words, assume that there is no taste difference between the five brands sampled and calculate the probability that all three panelists happened to randomly rate Godfather’s as worst.</h3>
+
+<h3>Enter as a percent but do not include the % sign. Round to the nearest tenth (e.g., .x).</h3>
+
+<p>Start with calculating the probability that one person ranks it last. There are different ways of thinking about this, but start with the number of possible permutations of 5.</p>
+
+<pre><code>factorial(5)
+</code></pre>
+
+<pre><code>## [1] 120
+</code></pre>
+
+<p>Then we can think about how many of these rearrangements of 5 there are with the last position Godfather&#39;s. Essentially, this is the same as thinking about how many rearrangements there are of the remaining 4 pizza places.</p>
+
+<pre><code>factorial(4)
+</code></pre>
+
+<pre><code>## [1] 24
+</code></pre>
+
+<p>So what is the probability that one person would randomly choose Godfather&#39;s last? This is the number of ways that it can be last over the total number of permutations.</p>
+
+<pre><code>factorial(4)/factorial(5)
+</code></pre>
+
+<pre><code>## [1] 0.2
+</code></pre>
+
+<p>Now what is the probability that 3 people choose it last, assuming that they are independent?</p>
+
+<pre><code>(factorial(4)/factorial(5))^3
+</code></pre>
+
+<pre><code>## [1] 0.008
+</code></pre>
+
+<h2>Question 10:</h2>
+
+<h3>In the early 1980s, hemophiliacs received reconstituted clotting factor concentrates derived from human blood. The concentrates were pooled from the blood of about 1000 donors per lot. If the prevalence of HIV in donor blood in the early 1980s was 1 in 3,000, what was the probability that a hemophiliac would contract HIV from a single infusion of clotting factors?</h3>
+
+<h3>Enter as a percent but do not include the % sign. Round to the nearest tenth (e.g., xx.x).</h3>
+
+<p>Restating this problem, what is the probability that at least one of the 1000 donors that make up the pool has HIV?</p>
+
+<p>This is the same as 1 - the probability that none of those 1000 donors has HIV. </p>
+
+<pre><code>prob.no.HIV &lt;- 1 - 1/3000
+prob.no.HIV^1000  # probablity that none of a sample of 1000 people have HIV
+</code></pre>
+
+<pre><code>## [1] 0.7165
+</code></pre>
+
+<pre><code>1 - prob.no.HIV^1000
+</code></pre>
+
+<pre><code>## [1] 0.2835
+</code></pre>
+
+<pre><code>round(100 * (1 - prob.no.HIV^1000), 1)
+</code></pre>
+
+<pre><code>## [1] 28.4
+</code></pre>
+
+</body>
+
+</html>
+
