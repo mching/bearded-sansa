@@ -1,0 +1,58 @@
+MOOC: R Exercise 3
+====
+
+```{r}
+# download.file(url = "https://s3-us-west-1.amazonaws.com/prod-edx/MedStats/RegressionExerciseDocs/mock_class_data.csv", destfile = "mock_class_data.csv", method = "curl")
+dat <- read.csv("./mock_class_data.csv")
+```
+
+1. What is the Pearson correlation coefficient between the variables ‘politics’ and ‘obama’? What does the p-value of the correlation coefficient suggest about its significance? Draw a scatter plot to visually verify the sign and magnitude of r.
+
+```{r}
+cor(dat$politics, dat$obama, method = "pearson", use = "complete.obs")
+plot(dat$politics, dat$obama)
+abline(lm(obama ~ politics, data = dat), col = "red")
+```
+
+2. What is the Pearson correlation coefficient between the variables ‘Mathlove’ and ‘Writinglove’? Is the correlation coefficient significant? 
+
+```{r}
+cor.test(dat$Mathlove, dat$WritingLove, method = "pearson", use = "complete.obs")
+```
+
+3. Pearson's correlation coefficient assumes that both variables are normally distributed (an assumption that's especially important for small samples). In the two questions above, was this assumption ever violated? 
+
+```{r}
+hist(dat$Mathlove)
+qqnorm(dat$Mathlove)
+hist(dat$WritingLove)
+qqnorm(dat$WritingLove)
+```
+Writing love looks to be bimodal, not normally distributed.
+
+4. Perform a linear regression of President Obama’s approval scores (‘obama’) vs. students’ impression of the new health care reform law (‘healthcare’). What are the values for the beta and the intercept? Are both of them statistically significant? What is the value of R2 for this linear regression?
+
+```{r}
+model4 <- lm(obama ~ healthcare, data = dat)
+summary(model4)
+```
+
+5. Next, perform another linear regression of President Obama’s approval scores on the students’ political bent AND their impression of the new health care reform law. What are the values for the betas and intercept? Compare the R2 value for this regression with the R2 values you obtained for the previous question. Is there any evidence of confounding?
+
+```{r}
+model5 <- lm(obama ~ healthcare + politics, data = dat)
+summary(model5)
+```
+R2 went up.
+
+There is confounding of the association by politics. The association between healthcare opinion and obama rating is no longer statistically significant.
+
+6. As an exercise in dummy coding, find the parameters for the following linear regression model:
+
+$Exercise = Intercept + [Varsity \,{} Sport \,{} in \,{} High \,{} School \,{} (1\,{} if\,{} yes)] + Beta$
+
+```{r}
+dat$Varsity.factor <- factor(dat$Varsity, levels = 0:1, labels = c("No", "Yes"))
+model6 <- lm(exercise ~ Varsity.factor, data = dat)
+summary(model6)
+```

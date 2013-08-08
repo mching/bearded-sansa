@@ -1,0 +1,20 @@
+Week 9 R
+========================================================
+
+```{r}
+library(survival)
+data(veteran)
+head(veteran)
+Surv.1 <- with(veteran, Surv(time, status))
+survfit.1 <- survfit(Surv.1 ~ 1)
+plot(survfit.1)
+```
+
+```{r}
+survfit.2 <- survfit(Surv.1 ~ veteran$celltype)
+plot(survfit.2)
+```
+
+```{r}
+coxph(Surv.1 ~ celltype, data = veteran)
+```

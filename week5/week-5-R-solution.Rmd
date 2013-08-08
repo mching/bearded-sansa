@@ -1,6 +1,58 @@
 Week 5 R
 ====
 
+Part 1: Simulation of Probability Distributions Using R
+------
+### Part 1 Problems
+
+#### Q1. Simulate flipping 20 coins 10 times. Set seed as `set.seed(100)`.
+
+```{r}
+set.seed(100)
+rbinom(10, 20, 0.5)
+```
+
+#### Q2. Simulate rolling a die 100 times. Assuming rolling a 6 is a success, how many of those times did you roll a 6? Set seed as `set.seed(101)`
+```{r}
+set.seed(101)
+x <- rbinom(100, 1, 1/6)
+sum(x)
+```
+
+#### Q3. You have 10 dice in a cup. You roll the dice and count how many 6s you get. You repeat this 100 times. How many times did you roll a 6 on each trial? On how many of the trials did you roll no sixes? Set seed as `set.seed(105)`
+```{r}
+set.seed(105)
+x <- rbinom(100, 10, 1/6)
+sum(x)
+length(which(x == 0))
+```
+
+#### Q4. Simulate the blood pressures of 20 individuals randomly drawn from a population with a mean blood pressure 120 and standard deviation of 10. What is the mean and standard deviation of the sample? Set seed as `set.seed(142)`.
+```{r}
+set.seed(142)
+bp <- rnorm(20, 120, 10)
+mean(bp)
+sd(bp)
+```
+
+#### Q5. Simulate the mean blood pressures of 1000 samples of 20 individuals drawn from the same population. What is the mean of the sample means? What is the standard deviation of the sample means? What is the theoretical standard error of the mean? How many of the sample means in this example are more than two s.e.m. from the population mean? Set seed as `set.seed(224)`
+
+```{r}
+set.seed(224)
+x <- rep(NA, 1000)
+for(i in 1:1000) {
+  x[i] <- mean(rnorm(20, 120, 10))
+}
+mean(x)
+sd(x)
+pred.sem <- 10/sqrt(20)
+pred.sem
+length(which(x < 120 - 2 * pred.sem | x > 120 + 2 * pred.sem))
+```
+
+Part 2: Odds Ratio Estimation
+-------
+
 We can simulate data for a case control study to practice calculating the odds ratio. Let's assume the prevalence of exposure in cases is 0.2, and the prevalence of exposure in controls is 0.1. We can generate some pseudo-random data using the code below.
 
 ```{r}
@@ -18,7 +70,7 @@ Table1 <- table(exposure, disease)
 Table1
 ```
 
-What is the odds ratio?
+#### Q1. What is the odds ratio?
 
 ```{r}
 a <- Table1[1, 1]
@@ -29,43 +81,32 @@ OR1 <- (a/b) / (c/d)  # OR
 OR1
 ```
 
-What is the standard error of the natural log of the odds ratio?
+#### Q2. What is the standard error of the natural log of the odds ratio?
 
 ```{r}
 seOR <- sqrt(1/a + 1/b + 1/c + 1/d)
 seOR
 ```
 
-What is the 95% confidence interval for the natural log of the odds ratio?
+#### Q3. What is the 95% confidence interval for the natural log of the odds ratio?
 
 ```{r}
 log(OR1) + qnorm(0.025)*seOR
 log(OR1) + qnorm(0.975)*seOR
 ```
 
-What is the 95% confidence interval for the odds ratio?
+#### Q4. What is the 95% confidence interval for the odds ratio?
 
 ```{r}
 exp(log(OR1) + qnorm(0.025)*seOR)
 exp(log(OR1) + qnorm(0.975)*seOR)
 ```
 
-There are a variety of functions that can help with this calculation.
+#### Q5. Install the package `epitools` (`install.packages("epitools")`) and use its `oddsratio` function to calculate the odds ratio. Type `?oddsratio` for help in using the function. Compare your result to Q1 and Q4.
 
-The package `epitools` has an `oddsratio` function that allows you to use different methods to calculate the odds ratio and 95% confidence interval. The `method = "wald"` argument gives you the method taught in class.
+The odds ratio estimate is slightly different unless you use the `method = "wald"` argument gives you the method taught in class.
 ```{r}
 library(epitools)
+oddsratio(Table1)
 oddsratio(Table1, method = "wald")
-```
-
-The `fisher.test` function from the `stats` package calculates the odds ratio using another method.
-
-```{r}
-fisher.test(Table1)
-```
-
-The `epi.2by2` function from the `epiR` package uses `fisher.test` to calculate the odds ratio and also supplies a variety of other useful estimates.
-```{r}
-library(epiR)
-epi.2by2(Table1, method = "case.control")
 ```

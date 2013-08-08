@@ -1,0 +1,30 @@
+Homework 9
+====
+
+
+```{r}
+exp(0.2501)
+
+```
+
+```{r}
+exp(0.0532*10)
+
+```
+
+```{r}
+library(gtools)
+icu <- 10
+CardiacSurgery <- 0
+AcutePhysiology <- 1
+ChronicHealth <- 1
+age <- 50
+
+log.odds.death <- (-4.5821 + 0.0447 * icu 
+                   - 2.1084 * CardiacSurgery
+                   + 0.1556 * AcutePhysiology 
+                   + 0.2501 * ChronicHealth 
+                   + 0.0532 * age)
+
+inv.logit(log.odds.death)
+```

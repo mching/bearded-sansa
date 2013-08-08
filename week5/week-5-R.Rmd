@@ -1,6 +1,72 @@
 Week 5 R
 ====
 
+Part 1: Simulation of Probability Distributions Using R
+------
+There has been some interest on the discussion forums in making simulations for the concepts we have been learning. 
+
+R can simulate many kinds of random data that will follow a given distribution (normal, t, binomial, Poisson). Typically you can feed into the `rfoo` function the appropriate parameters for the `foo` distribution. 
+
+For example, `rbinom` requires the number of observations, number of trials, and the probability. In this example, we are simulating 1 flip of a coin, and we are doing it 10 times. We can optionally set a "seed" so the pseudo-random number generator comes up with the same result every time.
+
+```{r}
+set.seed(123)  
+rbinom(n = 10, size = 1, prob = 0.5)
+```
+
+Another example using normally distributed data uses `rnorm`. This requires the inputs of number of observations, mean, and standard deviation. In this example, we want 10 numbers randomly generated from a distribution with mean of 5 and sd of 1.
+
+```{r}
+set.seed(215)
+x <- rnorm(n = 10, mean = 5, sd = 1)
+x
+```
+
+To generate more than one sample, we would most easily do it with a `for` loop. In R, `for` loops are not too complicated.
+
+```{r}
+for(i in 1:5) {
+  print("Hello world")
+}
+```
+
+To extend this to the normal distribution, we can do the following. We need to set up some way to save our result every time, so we need to do this beforehand.
+
+```{r}
+set.seed(215)
+
+# Set up the vector means as an empty vector with 100 NAs
+means <- rep(NA, 100)                           
+
+# 100 steps in this for loop
+for(i in 1:100) {                               
+  
+  # Generate the random numbers
+  randoms <- rnorm(n = 10, mean = 5, sd = 1)    
+  
+  # Calculate their mean and store it in x[i]. This can be combined with the prior step.
+  means[i] <- mean(randoms)                     
+}
+```
+Now we can see what's in `means` and what is its mean and standard deviation.
+
+```{r}
+means
+mean(means)
+sd(means)  # This is the standard error of the mean, predicted to be 1 divided by the square root of 10
+```
+
+### Part 1 Problems
+
+1. Simulate flipping 20 coins 10 times. Set seed as `set.seed(100)`.
+2. Simulate rolling a die 100 times. Assuming rolling a 6 is a success, how many of those times did you roll a 6? Set seed as `set.seed(101)`
+3. You have 10 dice in a cup. You roll the dice and count how many 6s you get. You repeat this 100 times. How many times did you roll a 6 on each trial? On how many of the trials did you roll no sixes? Set seed as `set.seed(105)`
+4. Simulate the blood pressures of 20 individuals randomly drawn from a population with a mean blood pressure 120 and standard deviation of 10. What is the mean and standard deviation of the sample? Set seed as `set.seed(142)`.
+5. Simulate the mean blood pressures of 1000 samples of 20 individuals drawn from the same population. What is the mean of the sample means? What is the standard deviation of the sample means? What is the theoretical standard error of the mean? How many of the sample means in this example are more than two s.e.m. from the population mean? Set seed as `set.seed(224)`
+
+Part 2: Odds Ratio Estimation
+-------
+
 We can simulate data for a case control study to practice calculating the odds ratio. Let's assume the prevalence of exposure in cases is 0.2, and the prevalence of exposure in controls is 0.1. We can generate some pseudo-random data using the code below.
 
 ```{r}
@@ -18,15 +84,10 @@ Table1 <- table(exposure, disease)
 Table1
 ```
 
-Q1. What is the odds ratio?
-Q2. What is the standard error of the natural log of the odds ratio?
-Q3. What is the 95% confidence interval for the natural log of the odds ratio?
-Q4. What is the 95% confidence interval for the odds ratio?
-Q5. Install the package `epitools` and use its `oddsratio` function to calculate the odds ratio.
+### Part 2 Problems
+1. What is the odds ratio?  
+2. What is the standard error of the natural log of the odds ratio?  
+3. What is the 95% confidence interval for the natural log of the odds ratio?  
+4. What is the 95% confidence interval for the odds ratio?  
+5. Install the package `epitools` (`install.packages("epitools")`) and use its `oddsratio` function to calculate the odds ratio. Type `?oddsratio` for help in using the function. Compare your result to Q1 and Q4.
 
-To set this up, start with:
-```{r}
-install.packages("epitools")
-library(epitools)
-?oddsratio
-```

@@ -1,0 +1,9 @@
+Unit 8 Homework
+
+Question 1:
+
+The following scatter plot shows the relationship between year of release and alcohol exposure time (in seconds) for G-rated animated feature films released in the U.S. between 1937 and 2000. The authors fit a linear regression line to the data (displayed in the scatter plot).
+
+```{r}
+(49-10)/(2000-1937)
+```

@@ -1,122 +1,49 @@
-Homework 7
-====
+Week 7 R
+=====
+### Survival Analysis in R
 
-### Question 1:
-
-#### The following table comes from a twin study. Researchers compared previous chemical exposures between twins who were discordant for Parkinson’s disease (one twin had Parkinson’s disease but the other did not). (Reproduced with permission from: Goldman SM, et al. Solvent exposures and parkinson disease risk in twins. Ann Neurol 2012; 71: 776-784; the table has been simplified from the original for this assignment).
-
-#### Table 3. Solvent Exposure Frequencies in Parkinson's-Discordant Twins, n=99 Pairs.
-
-Solvent | Case-/Control- |	Case+/Control- |	Case-/Control+ |	Case+/Control+
---------|---------------:|----------------:|----------------:|----------------:
-Toluene| 72| 11| 9| 7
-Xylene|	88|	6|	2|	3
-n-Hexane|	85|	6|	7|	1
-CCI4|	74|	14|	9|	2
-PERC|	93|	5|	1|	0
-TCE|	87|	9|	2|	1
-
-This is a twin study so the observations are related. You have paired categorical data so McNemar's test would be appropriate.
-
-### Question 2:
-
-#### Use the test you picked in question 1 to analyze the data on exposure to PERC alone (fifth row of data in the above table). Calculate a two-sided p-value for the null hypothesis that PERC exposure is equivalent between Parkinson’s cases and controls. Enter the resulting two-sided p-value rounded to 2 decimal places:
-
-In the lecture we were shown that this is a binomial test. 
-
+R comes preinstalled with the `survival` package to do survival analysis.
 ```{r}
-pbinom(1, 6, 0.5) * 2
+library(survival)
 ```
 
-### Question 3:
-
-#### The following table shows the effects of smoking on blood pressure and heart rate in a sample of 100 women. Assume that blood pressure and heart rate are reasonably normally distributed.
-
-#### Effects of smoking on blood pressure and heart rate (mean ± 1 standard deviation)
-
-Measurement | Before Smoking	| After smoking
----------- | :-----------: | :----------:
-Systolic pressure (mm/Hg)	| 108.6±12.6 |	110.0±12.4
-Heart rate (bpm) |	90.0±10.9	| 93.8±11.0
-
-#### What is the appropriate statistical test for analyzing these data?
-
-This is correlated data and we can use a paired t-test.
-
-### Question 4:
-
-#### TRUE or FALSE. The data given in the table are sufficient to be able to apply the statistical test that you selected in question 3.
-
-We need to know the mean and standard deviation of the differences, so no, the data are not sufficient to apply the paired t-test.
-
-### Question 5:
-
-#### The following data were collected to examine possible associations between being breast-fed as an infant and being overweight or obese as an adult. Researchers asked 1486 mothers of 18-year old men about the total duration that they had breast-fed their sons and then took weight and height measurements of the sons. (Extracted with permission from: Victora CG et al. Anthropometry and body composition of 18 year old men according to duration of breast feeding: birth cohort study from Brazil. BMJ 2003; 327: 901, Table 3.)
-
-#### Table 3. Anthropometry and body composition of 18-year old men according to total duration of breast-feeding. Values are number (percent) and means (SDs).
-
-*Duration of total breast feeding (months)*
-
-Outcomes|	<1|	1-6|	6-12|	>=12
-----|----:|-----:|-----:|-----:
-Number overweight (%)|	69 (14.1)|	130 (24.7)|	50 (33.3)|	44 (13.7)
-Number obese (%)|	47 (9.6)|	69 (13.1)|	31 (20.7)|	27 (8.4)
-BMI, kg/m2 (SD)	|22.5 (3.8)	|22.7 (3.6)|	22.9 (3.2)|	23.0 (3.5)
-Total Number of Participants|	489	|526	|150	|321
-
-#### Which statistical test would you use to determine whether or not breast-feeding duration is related to overweight at 18?
-
-Overweight is a categorical variable. Breastfeeding duration is also categorical. We would use a chi-square test.
-
-### Question 6:
-
-#### Which statistical test would you use to determine whether or not breast-feeding duration is related to BMI at 18?
-BMI is a continuous variable. Predictors are categorical variables (more than 2). We can use ANOVA.
-
-### Question 8:
-
-#### The following figure is from a study of exercise endurance (duration on an exercise test) in a group of 13 children with cystic fibrosis before and after an intervention program (a 4-week summer camp). For example, subject 1 improved by 3 minutes. (Reproduced with permission from: Blau H, et al. Effects of an Intensive 4-Week Summer Camp on Cystic Fibrosis: Pulmonary Function, Exercise Tolerance, and Nutrition. Chest. 2002;121:1117-1122.)
-
-![Question 8 graph](https://class.stanford.edu/c4x/Medicine/HRP258/asset/HW7q8.png)
-
-#### Using your best estimate of values from the graph, calculate the mean change in exercise duration for the 13 patients and enter it rounded to 2 decimal places.
-
+We can return to the `rats` dataset from our week 2 example to see how this works.
 ```{r}
-exercise.change <- c(3, 0.5, 0, 0.5, 1.5, 0, 1.5, 0.5, 0.5, 1, 0.5, 0, 0.5)
-mean.change <- mean(exercise.change)
-mean.change
+data(rats)
 ```
 
-### Question 9:
-
-#### Calculate the standard deviation of change in duration for the 13 patients and enter it rounded to two decimal places.
-
+We first have to create a survival object by combining time and the event (censored or failure/tumor).
 ```{r}
-sd.change <- sd(exercise.change)
-sd.change
+surv.object <- Surv(time = rats$time, event = rats$status)
 ```
 
-### Question 10:
-
-#### Calculate the standard error for the mean change in duration and enter it rounded to two decimal places. Recall that the standard error of a mean is the standard deviation divided by the square root of n.
-
+The time are labeled by + signs for censored observations.
 ```{r}
-sem.change <- sd.change/sqrt(length(exercise.change))
-sem.change
+surv.object
 ```
 
-### Question 11:
-
-#### Give the 99% confidence interval for the estimated increase in test duration. The T-value for a 99% confidence interval with 12 degrees of freedom is: 3.055. Please round both of your answers to two decimal places.
-
-#### The lower confidence bound is: 
-
+We then fit a survival curve to it using `survfit`. As you can see, that's not so interesting, so we can plot it to see the actual curve.
 ```{r}
-mean.change + qt(0.005, df = 12)*sem.change
+survfit(surv.object ~ 1)
+plot(survfit(surv.object ~ 1))
 ```
 
-#### The upper confidence bound is:
-
+To compare two curves by group, we can replace the 1 in the formula above by the group variable, in this case, treatment.
 ```{r}
-mean.change + qt(0.995, df = 12)*sem.change
+surv.all <- survfit(surv.object ~ rats$rx)
+plot(surv.all, col = c("red","blue"), xlab = "time", ylab = "percent survival")
+legend(x = "bottomleft", legend = "Red = control, Blue = drug")
 ```
+
+The curves look divergent but to test the null hypothesis that they are the same, we can use the log rank test. This is done using the `survdiff` function.
+```{r}
+survdiff(surv.object ~ rats$rx)
+```
+
+### Problems
+
+1. Load the National Wilms Tumor dataset (`data(nwtco)`) from the survival package.
+2. Create the survey object using `rel` (relapse) as the event and `edrel` (time to relapse) as the time.
+3. Fit the survival curve and plot it.
+4. Compare time to relapse by the tumor pathology reported by the local institution (variable name is `instit`). Plot the survival curve by local institution tumor pathology.
+5. Test the null hypothesis that the two survival curves for both pathology types are equal.

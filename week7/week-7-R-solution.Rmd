@@ -1,0 +1,41 @@
+Week 7 R
+=====
+### Survival Analysis in R
+
+### Problems
+
+1. Load the National Wilms Tumor dataset (`data(nwtco)`) from the survival package.
+
+```{r}
+library(survival)
+data(nwtco)
+str(nwtco)
+```
+
+2. Create the survey object using `rel` (relapse) as the event and `edrel` (time to relapse) as the time.
+
+```{r}
+surv.object <- Surv(time = nwtco$edrel, event = nwtco$rel)
+```
+
+
+3. Fit the survival curve and plot it.
+
+```{r}
+survfit(surv.object ~ 1)
+plot(survfit(surv.object ~ 1))
+```
+
+4. Compare time to relapse by the tumor pathology reported by the local institution (variable name is `instit`). Plot the survival curve by local institution tumor pathology.
+
+```{r}
+survfit(surv.object ~ nwtco$instit)
+plot(survfit(surv.object ~ nwtco$instit), col = c("red","blue"), xlab = "time", ylab = "percent without relapse")
+legend(x = "bottomleft", legend = "Red = Pathology #1, Blue = Pathology #2")
+```
+
+5. Test the null hypothesis that the two survival curves for both pathology types are equal.
+
+```{r}
+survdiff(surv.object ~ nwtco$instit)
+```

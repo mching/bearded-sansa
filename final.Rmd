@@ -1,0 +1,78 @@
+Final Exam
+======
+
+Q5.  In a psychology experiment in which 100 volunteers were asked to read a paragraph about an engineer, 65 assumed that the engineer was male despite the fact that the paragraph did not specify gender (and avoided gendered pronouns such as “he” or “she”). If the null hypothesis here is that there is no gender bias, what is the two-sided p-value associated with this result? Use a normal approximation to solve this. 
+
+```{r}
+n <- 100
+p <- 0.5
+q <- 1 - p
+mu <- n*p
+var5 <- n*p*q
+sd5 <- sqrt(var5)
+2 * pnorm(65, mean = mu, sd = sd5, lower.tail = F)
+2 * pbinom(65, 100, prob = 0.5, lower.tail = F)
+```
+
+Q6. Researchers reported that in a sample of U.S. women aged 50 to 54 who underwent mammography, 14.4% were recalled for further evaluation; however, in a similar sample of women undergoing mammography in the United Kingdom, only 7.6% were recalled for further evaluation.
+
+What are the observed risk and odds ratios for the association between living in the United States (“exposed”) vs. the United Kingdom (“unexposed”) and being recalled for further evaluation following mammography (outcome)?
+
+```{r}
+p.US <- 0.144
+p.UK <- 0.076
+
+odds <- function(p) {p/(1-p)}
+
+odds.US <- odds(p.US)
+odds.UK <- odds(p.UK)
+
+RR.6 <- p.US/p.UK
+OR.6 <- odds.US/odds.UK
+
+RR.6
+OR.6
+```
+
+Q15. You are performing a cohort study to look at risk factors for breast cancer in postmenopausal women. If the probability of developing breast cancer among smokers is .05 for the study duration, then if you sample 100 smokers, how many do you expect to develop the disease? Give the expected value +/- 1 standard deviation.
+
+```{r}
+p <- 0.05
+q <- 1 - p
+n <- 100
+mu.15 <- n*p
+sd.15 <- sqrt(n*p*q)
+
+mu.15
+sd.15
+
+```
+
+Q21. A study was conducted to examine the peer review process. The investigators hypothesized that reviewers suggested by authors would give more favorable reviews than reviewers picked by journal editors. They obtained data on 40 manuscripts that had been reviewed by 1 author-suggested and 1 editor-suggested reviewer. They obtained the following results:
+
+---|Favorable | Unfavorable
+---|---|---
+**Favorable** |10  |  1
+**Unfavorable** | 9  | 20
+
+```{r}
+2 * pbinom(1, 10, 0.5)
+```
+
+Q22. In a survey of 1000 registered U.S. voters, 55% respond that they support health care reform. What is the 95% confidence interval for the true percentage of U.S. registered voters who support health care reform?
+
+```{r}
+n <- 1000
+p <- 0.55
+q <- 1 - p
+
+sd.22 <- sqrt(p*q/n)
+cbind(Lower = p + qnorm(0.025) * sd.22, Upper = p + qnorm(0.975) * sd.22)
+```
+
+```{r}
+library(epiR)
+reform <- c(rep(1, 550), rep(0, 450))
+table(reform)
+epi.conf(reform)
+```
