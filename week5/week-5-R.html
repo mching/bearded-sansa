@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<!-- saved from url=(0014)about:internet -->
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+<title>Week 5 R</title>
+
+<style type="text/css">
+body, td {
+   font-family: sans-serif;
+   background-color: white;
+   font-size: 12px;
+   margin: 8px;
+}
+
+tt, code, pre {
+   font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
+}
+
+h1 { 
+   font-size:2.2em; 
+}
+
+h2 { 
+   font-size:1.8em; 
+}
+
+h3 { 
+   font-size:1.4em; 
+}
+
+h4 { 
+   font-size:1.0em; 
+}
+
+h5 { 
+   font-size:0.9em; 
+}
+
+h6 { 
+   font-size:0.8em; 
+}
+
+a:visited {
+   color: rgb(50%, 0%, 50%);
+}
+
+pre {	
+   margin-top: 0;
+   max-width: 95%;
+   border: 1px solid #ccc;
+   white-space: pre-wrap;
+}
+
+pre code {
+   display: block; padding: 0.5em;
+}
+
+code.r, code.cpp {
+   background-color: #F8F8F8;
+}
+
+table, td, th {
+  border: none;
+}
+
+blockquote {
+   color:#666666;
+   margin:0;
+   padding-left: 1em;
+   border-left: 0.5em #EEE solid;
+}
+
+hr {
+   height: 0px;
+   border-bottom: none;
+   border-top-width: thin;
+   border-top-style: dotted;
+   border-top-color: #999999;
+}
+
+@media print {
+   * { 
+      background: transparent !important; 
+      color: black !important; 
+      filter:none !important; 
+      -ms-filter: none !important; 
+   }
+
+   body { 
+      font-size:12pt; 
+      max-width:100%; 
+   }
+       
+   a, a:visited { 
+      text-decoration: underline; 
+   }
+
+   hr { 
+      visibility: hidden;
+      page-break-before: always;
+   }
+
+   pre, blockquote { 
+      padding-right: 1em; 
+      page-break-inside: avoid; 
+   }
+
+   tr, img { 
+      page-break-inside: avoid; 
+   }
+
+   img { 
+      max-width: 100% !important; 
+   }
+
+   @page :left { 
+      margin: 15mm 20mm 15mm 10mm; 
+   }
+     
+   @page :right { 
+      margin: 15mm 10mm 15mm 20mm; 
+   }
+
+   p, h2, h3 { 
+      orphans: 3; widows: 3; 
+   }
+
+   h2, h3 { 
+      page-break-after: avoid; 
+   }
+}
+
+</style>
+
+
+
+
+
+</head>
+
+<body>
+<h1>Week 5 R</h1>
+
+<h2>Part 1: Simulation of Probability Distributions Using R</h2>
+
+<p>There has been some interest on the discussion forums in making simulations for the concepts we have been learning. </p>
+
+<p>R can simulate many kinds of random data that will follow a given distribution (normal, t, binomial, Poisson). Typically you can feed into the <code>rfoo</code> function the appropriate parameters for the <code>foo</code> distribution. </p>
+
+<p>For example, <code>rbinom</code> requires the number of observations, number of trials, and the probability. In this example, we are simulating 1 flip of a coin, and we are doing it 10 times. We can optionally set a &ldquo;seed&rdquo; so the pseudo-random number generator comes up with the same result every time.</p>
+
+<pre><code>set.seed(123)
+rbinom(n = 10, size = 1, prob = 0.5)
+</code></pre>
+
+<pre><code>##  [1] 0 1 0 1 1 0 1 1 1 0
+</code></pre>
+
+<p>Another example using normally distributed data uses <code>rnorm</code>. This requires the inputs of number of observations, mean, and standard deviation. In this example, we want 10 numbers randomly generated from a distribution with mean of 5 and sd of 1.</p>
+
+<pre><code>set.seed(215)
+x &lt;- rnorm(n = 10, mean = 5, sd = 1)
+x
+</code></pre>
+
+<pre><code>##  [1] 5.337 3.955 6.471 6.509 4.219 5.396 5.871 3.273 4.358 4.249
+</code></pre>
+
+<p>To generate more than one sample, we would most easily do it with a <code>for</code> loop. In R, <code>for</code> loops are not too complicated.</p>
+
+<pre><code>for (i in 1:5) {
+    print(&quot;Hello world&quot;)
+}
+</code></pre>
+
+<pre><code>## [1] &quot;Hello world&quot;
+## [1] &quot;Hello world&quot;
+## [1] &quot;Hello world&quot;
+## [1] &quot;Hello world&quot;
+## [1] &quot;Hello world&quot;
+</code></pre>
+
+<p>To extend this to the normal distribution, we can do the following. We need to set up some way to save our result every time, so we need to do this beforehand.</p>
+
+<pre><code>set.seed(215)
+
+# Set up the vector means as an empty vector with 100 NAs
+means &lt;- rep(NA, 100)
+
+# 100 steps in this for loop
+for (i in 1:100) {
+
+    # Generate the random numbers
+    randoms &lt;- rnorm(n = 10, mean = 5, sd = 1)
+
+    # Calculate their mean and store it in x[i]. This can be combined with the
+    # prior step.
+    means[i] &lt;- mean(randoms)
+}
+</code></pre>
+
+<p>Now we can see what&#39;s in <code>means</code> and what is its mean and standard deviation.</p>
+
+<pre><code>means
+</code></pre>
+
+<pre><code>##   [1] 4.964 5.377 4.770 4.934 5.462 5.475 4.588 4.817 4.742 5.068 5.228
+##  [12] 5.051 5.184 4.843 4.915 5.194 4.685 4.782 4.844 4.913 4.884 4.612
+##  [23] 5.137 5.139 5.144 4.833 5.090 4.586 5.369 4.972 5.165 4.946 5.132
+##  [34] 5.159 5.281 5.078 5.327 5.216 4.797 4.786 4.972 4.552 4.676 4.716
+##  [45] 5.151 5.365 4.927 5.151 4.976 4.926 5.307 4.830 4.465 5.464 5.627
+##  [56] 5.687 4.965 5.081 5.377 5.248 4.874 4.621 5.105 5.107 5.058 4.651
+##  [67] 5.134 4.937 4.836 4.970 5.244 5.096 5.189 4.581 4.672 5.648 5.078
+##  [78] 5.443 5.123 4.541 5.234 4.952 5.080 4.653 5.356 5.133 5.464 4.826
+##  [89] 4.882 4.978 4.958 4.805 4.563 5.346 4.339 5.011 4.695 5.064 4.930
+## [100] 5.078
+</code></pre>
+
+<pre><code>mean(means)
+</code></pre>
+
+<pre><code>## [1] 5.012
+</code></pre>
+
+<pre><code>sd(means)  # This is the standard error of the mean, predicted to be 1 divided by the square root of 10
+</code></pre>
+
+<pre><code>## [1] 0.2763
+</code></pre>
+
+<h3>Part 1 Problems</h3>
+
+<ol>
+<li>Simulate flipping 20 coins 10 times. Set seed as <code>set.seed(100)</code>.</li>
+<li>Simulate rolling a die 100 times. Assuming rolling a 6 is a success, how many of those times did you roll a 6? Set seed as <code>set.seed(101)</code></li>
+<li>You have 10 dice in a cup. You roll the dice and count how many 6s you get. You repeat this 100 times. How many times did you roll a 6 on each trial? On how many of the trials did you roll no sixes? Set seed as <code>set.seed(105)</code></li>
+<li>Simulate the blood pressures of 20 individuals randomly drawn from a population with a mean blood pressure 120 and standard deviation of 10. What is the mean and standard deviation of the sample? Set seed as <code>set.seed(142)</code>.</li>
+<li>Simulate the mean blood pressures of 1000 samples of 20 individuals drawn from the same population. What is the mean of the sample means? What is the standard deviation of the sample means? What is the theoretical standard error of the mean? How many of the sample means in this example are more than two s.e.m. from the population mean? Set seed as <code>set.seed(224)</code></li>
+</ol>
+
+<h2>Part 2: Odds Ratio Estimation</h2>
+
+<p>We can simulate data for a case control study to practice calculating the odds ratio. Let&#39;s assume the prevalence of exposure in cases is 0.2, and the prevalence of exposure in controls is 0.1. We can generate some pseudo-random data using the code below.</p>
+
+<pre><code>set.seed(706)
+disease &lt;- c(rep(1, 1000), rep(0, 1000))
+exposure &lt;- c(rbinom(1000, 1, 0.2), rbinom(1000, 1, 0.1))
+</code></pre>
+
+<p>Reorder factor (not actually necessary here since the OR will be the same)</p>
+
+<pre><code>disease &lt;- factor(disease, levels = 1:0, labels = c(&quot;case&quot;, &quot;control&quot;))
+exposure &lt;- factor(exposure, levels = 1:0, labels = c(&quot;exposed&quot;, &quot;not exposed&quot;))
+Table1 &lt;- table(exposure, disease)
+Table1
+</code></pre>
+
+<pre><code>##              disease
+## exposure      case control
+##   exposed      195     106
+##   not exposed  805     894
+</code></pre>
+
+<h3>Part 2 Problems</h3>
+
+<ol>
+<li>What is the odds ratio?<br/></li>
+<li>What is the standard error of the natural log of the odds ratio?<br/></li>
+<li>What is the 95% confidence interval for the natural log of the odds ratio?<br/></li>
+<li>What is the 95% confidence interval for the odds ratio?<br/></li>
+<li>Install the package <code>epitools</code> (<code>install.packages(&quot;epitools&quot;)</code>) and use its <code>oddsratio</code> function to calculate the odds ratio. Type <code>?oddsratio</code> for help in using the function. Compare your result to Q1 and Q4.</li>
+</ol>
+
+</body>
+
+</html>
+

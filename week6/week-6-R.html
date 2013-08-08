@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<!-- saved from url=(0014)about:internet -->
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+<title>Week 6 R Extra Exercise</title>
+
+<style type="text/css">
+body, td {
+   font-family: sans-serif;
+   background-color: white;
+   font-size: 12px;
+   margin: 8px;
+}
+
+tt, code, pre {
+   font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
+}
+
+h1 { 
+   font-size:2.2em; 
+}
+
+h2 { 
+   font-size:1.8em; 
+}
+
+h3 { 
+   font-size:1.4em; 
+}
+
+h4 { 
+   font-size:1.0em; 
+}
+
+h5 { 
+   font-size:0.9em; 
+}
+
+h6 { 
+   font-size:0.8em; 
+}
+
+a:visited {
+   color: rgb(50%, 0%, 50%);
+}
+
+pre {	
+   margin-top: 0;
+   max-width: 95%;
+   border: 1px solid #ccc;
+   white-space: pre-wrap;
+}
+
+pre code {
+   display: block; padding: 0.5em;
+}
+
+code.r, code.cpp {
+   background-color: #F8F8F8;
+}
+
+table, td, th {
+  border: none;
+}
+
+blockquote {
+   color:#666666;
+   margin:0;
+   padding-left: 1em;
+   border-left: 0.5em #EEE solid;
+}
+
+hr {
+   height: 0px;
+   border-bottom: none;
+   border-top-width: thin;
+   border-top-style: dotted;
+   border-top-color: #999999;
+}
+
+@media print {
+   * { 
+      background: transparent !important; 
+      color: black !important; 
+      filter:none !important; 
+      -ms-filter: none !important; 
+   }
+
+   body { 
+      font-size:12pt; 
+      max-width:100%; 
+   }
+       
+   a, a:visited { 
+      text-decoration: underline; 
+   }
+
+   hr { 
+      visibility: hidden;
+      page-break-before: always;
+   }
+
+   pre, blockquote { 
+      padding-right: 1em; 
+      page-break-inside: avoid; 
+   }
+
+   tr, img { 
+      page-break-inside: avoid; 
+   }
+
+   img { 
+      max-width: 100% !important; 
+   }
+
+   @page :left { 
+      margin: 15mm 20mm 15mm 10mm; 
+   }
+     
+   @page :right { 
+      margin: 15mm 10mm 15mm 20mm; 
+   }
+
+   p, h2, h3 { 
+      orphans: 3; widows: 3; 
+   }
+
+   h2, h3 { 
+      page-break-after: avoid; 
+   }
+}
+
+</style>
+
+
+
+
+
+</head>
+
+<body>
+<h1>Week 6 R Extra Exercise</h1>
+
+<p>There&#39;s not much to be learned with R this week, but we can go over a little of the sample size calculation.</p>
+
+<p>The standard <code>stats</code> package comes with <code>power.t.test</code> and <code>power.prop.test</code> for the examples shown in the optional module. These tests assume equal sample sizes. See <a href="http://stat.ethz.ch/R-manual/R-patched/library/stats/html/power.t.test.html"><code>power.t.test</code></a> and <a href="http://stat.ethz.ch/R-manual/R-patched/library/stats/html/power.prop.test.html"><code>power.prop.test</code></a> for more.</p>
+
+<p>The basic idea is that you specify 3 of the following 4 variables: sample size, difference in means, standard deviation, and power. The function will calculate the one you leave out. </p>
+
+<ol>
+<li><p>What sample size do you need for a difference in means of 0.5 given a standard deviation of 1, significance level of 0.05, power of 0.80?</p></li>
+<li><p>What is the power to detect a 10 point difference in means given a sample size of 30 in both groups, significance level of 0.05, and standard deviation of 50?</p></li>
+<li><p>How many people do you need to detect a difference in proportions of 5% (specifically 10% versus 15%) at a significance level of 0.05 with 90% power?</p></li>
+<li><p>What is your power to detect a difference in proportions of 25% (50% vs 75%) with a sample size of 50 per group and significance level of 0.10?</p></li>
+</ol>
+
+<p>For different sized groups, you need a new package, for example, <a href="http://cran.r-project.org/web/packages/pwr/index.html"><code>pwr</code></a>. <a href="http://www.statmethods.net/stats/power.html">This page</a> describes the usage in more detail.</p>
+
+<ol>
+<li>What is the smallest effect size (difference divided by standard deviation) that can be observed when comparing the means of a group of 50 and 100 people at a power of 0.85?</li>
+</ol>
+
+</body>
+
+</html>
+

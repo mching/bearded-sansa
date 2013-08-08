@@ -1,0 +1,21 @@
+Week 6 R Extra Exercise
+====
+
+There's not much to be learned with R this week, but we can go over a little of the sample size calculation.
+
+The standard `stats` package comes with `power.t.test` and `power.prop.test` for the examples shown in the optional module. These tests assume equal sample sizes. See [`power.t.test`](http://stat.ethz.ch/R-manual/R-patched/library/stats/html/power.t.test.html) and [`power.prop.test`](http://stat.ethz.ch/R-manual/R-patched/library/stats/html/power.prop.test.html) for more.
+
+The basic idea is that you specify 3 of the following 4 variables: sample size, difference in means, standard deviation, and power. The function will calculate the one you leave out. 
+
+1. What sample size do you need for a difference in means of 0.5 given a standard deviation of 1, significance level of 0.05, power of 0.80?
+
+2. What is the power to detect a 10 point difference in means given a sample size of 30 in both groups, significance level of 0.05, and standard deviation of 50?
+
+3. How many people do you need to detect a difference in proportions of 5% (specifically 10% versus 15%) at a significance level of 0.05 with 90% power?
+
+4. What is your power to detect a difference in proportions of 25% (50% vs 75%) with a sample size of 50 per group and significance level of 0.10?
+
+For different sized groups, you need a new package, for example, [`pwr`](http://cran.r-project.org/web/packages/pwr/index.html). [This page](http://www.statmethods.net/stats/power.html) describes the usage in more detail.
+
+1. What is the smallest effect size (difference divided by standard deviation) that can be observed when comparing the means of a group of 50 and 100 people at a power of 0.85?
+
